@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Kanji N5-N4 - Test Center</title>
+    <title>Master Kanji N5-N4 (600 Kanji)</title>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -14,51 +14,27 @@
             display: flex;
             justify-content: center;
         }
-        .container { width: 100%; max-width: 720px; }
-        
-        /* Sticky Header Dashboard */
-        #sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: #ffffff;
-            padding: 12px 18px;
-            border-radius: 12px;
-            margin-bottom: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 1px solid #e0e0e0;
-        }
-        
+        .container { width: 100%; max-width: 680px; }
         .header-card {
             background: #ffffff;
             border-radius: 12px;
-            padding: 24px;
+            padding: 20px;
             margin-bottom: 16px;
             border-top: 8px solid #673ab7;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-        h1 { font-size: 22px; color: #673ab7; margin: 0 0 8px 0; }
-        
-        /* Form Identitas Peserta */
-        .user-form {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 16px;
+            justify-content: space-between;
+            align-items: center;
         }
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group label { font-size: 14px; font-weight: bold; color: #333; }
-        .form-input {
-            padding: 10px 14px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+        h1 { font-size: 18px; color: #673ab7; margin: 0; }
+        .part-indicator {
+            background: #f3e5f5;
+            color: #512da8;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 20px;
             font-size: 14px;
         }
-
-        /* Card Soal */
         .card {
             background: #ffffff;
             border-radius: 12px;
@@ -86,11 +62,10 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .opt-btn:hover:not(:disabled) { background: #f1f3f4; }
+        .opt-btn:hover { background: #f1f3f4; }
         .opt-btn.correct { background-color: #e8f5e9 !important; border-color: #2e7d32 !important; color: #1b5e20 !important; font-weight: bold; }
         .opt-btn.wrong { background-color: #ffebee !important; border-color: #c62828 !important; color: #b71c1c !important; }
         .opt-btn:disabled { cursor: default; }
-        
         .detail-box {
             display: none;
             margin-top: 14px;
@@ -103,725 +78,664 @@
             color: #202124;
         }
         .detail-title { font-weight: bold; color: #512da8; margin-bottom: 6px; font-size: 15px; }
-
-        /* Actions & Navigation */
-        .btn-main {
+        .nav-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .btn-nav {
             background-color: #673ab7;
             color: white;
             border: none;
-            padding: 12px 24px;
-            font-size: 16px;
+            padding: 10px 18px;
+            font-size: 14px;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            width: 100%;
-            transition: background 0.2s;
         }
-        .btn-main:hover { background-color: #512da8; }
-        .btn-main:disabled { background-color: #ccc; cursor: not-allowed; }
-
-        /* Results Modal / Screen */
-        #result-screen {
-            display: none;
-            background: #fff;
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .score-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: #f3e5f5;
-            color: #673ab7;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: bold;
-            margin: 16px auto;
-            border: 4px solid #673ab7;
-        }
+        .btn-nav:disabled { background-color: #ccc; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
 <div class="container">
-
-    <!-- Sticky Dashboard Header -->
-    <div id="sticky-header">
-        <div>
-            <small style="color: #666;">Waktu Tersisa:</small>
-            <div id="timerDisplay" style="font-weight: bold; color: #d32f2f; font-size: 1.1em;">20:00</div>
-        </div>
-        <div>
-            <small style="color: #666;">Progres Jawab:</small>
-            <div style="font-weight: bold; color: #2e7d32;" id="progressDisplay">0 / 0</div>
-        </div>
-    </div>
-
-    <!-- Header & Registrasi Peserta -->
-    <div class="header-card" id="welcomeCard">
-        <h1>Ujian Kanji N5-N4 Master</h1>
-        <p style="color: #5f6368; font-size: 14px;">Silakan isi data diri terlebih dahulu untuk memulai ujian. Hasil ujian akan terkirim langsung ke sistem.</p>
-        
-        <div class="user-form">
-            <div class="form-group">
-                <label>Nama Lengkap *</label>
-                <input type="text" id="userName" class="form-input" placeholder="Masukkan nama Anda" required>
-            </div>
-            <div class="form-group">
-                <label>Email / ID Peserta *</label>
-                <input type="text" id="userId" class="form-input" placeholder="Masukkan email atau NIP/NIS" required>
-            </div>
-            <button class="btn-main" style="margin-top: 10px;" onclick="startQuiz()">Mulai Kerjakan Ujian 🚀</button>
-        </div>
-    </div>
-
-    <!-- Container Quiz -->
-    <div id="quizContainer" style="display: none;"></div>
-
-    <!-- Tombol Submit -->
-    <div id="actionContainer" style="display: none; margin-bottom: 30px;">
-        <button class="btn-main" style="background-color: #2e7d32;" onclick="submitQuiz()">Selesaikan & Kirim Jawaban 📩</button>
-    </div>
-
-    <!-- Halaman Hasil / Dashboard Peserta -->
-    <div id="result-screen">
-        <h2 style="color: #333; margin-top: 0;">Hasil Ujian Anda</h2>
-        <p id="participantInfo" style="color: #666;"></p>
-        
-        <div class="score-circle" id="finalScore">0</div>
-        <h3 id="passStatus" style="margin-bottom: 20px;">-</h3>
-
-        <div style="display: flex; gap: 10px; justify-content: center;">
-            <button class="btn-main" style="width: auto; background-color: #0288d1;" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
-        </div>
-    </div>
-
+<!-- Tampilan Header Melayang (Skor & Filter Rentang) -->
+<div id="sticky-header" style="position: sticky; top: 0; z-index: 1000; background: #fff; padding: 10px; border-bottom: 2px solid #ddd; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <div>
+    <strong>Rentang Soal:</strong>
+    <input type="number" id="startNo" placeholder="Mulai" style="width: 60px; padding: 4px;" value="1"> - 
+    <input type="number" id="endNo" placeholder="Sampai" style="width: 60px; padding: 4px;">
+    <button onclick="filterRange()" style="padding: 4px 8px; cursor: pointer;">Terapkan</button>
+  </div>
+  <div>
+    <strong>Poin: <span id="scoreDisplay" style="color: green; font-size: 1.2em;">0</span></strong>
+  </div>
 </div>
 
+    <div class="header-card">
+        <h1>Master Kanji N5-N4</h1>
+        <div class="part-indicator" id="partDisplay">Part 1</div>
+    </div>
+
+    <div id="quizContainer"></div>
+    <div class="nav-card">
+        <button class="btn-nav" id="prevBtn" onclick="changePart(-1)">❮ Prev Part</button>
+        <button class="btn-nav" style="background-color: #00897b;" onclick="shuffleCurrentPart()">🔀 Acak Soal & ABCD</button>
+        <button class="btn-nav" id="nextBtn" onclick="changePart(1)">Next Part ❯</button>
+
+
 <script>
-// ⚠️ TEMPELKAN WEB APP URL GOOGLE APPS SCRIPT ANDA DI SINI
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx0nrz-XmU1-f99_WV3tDvjxpSJauio5qbTgQA6vaXdqL-otaWRDju0ausrFSG4vCwTGA/exec";
+let totalScore = 0;
 
-// Master Database Soal
-const kanjiData = [
-    {
-    id: 1, part: 1, target: "魚", context: "魚", opts: ["さかな", "にく", "たまご", "みず"], ans: 0, arti: "Ikan", exp: "漢字「魚」の読み方は「さかな」です。",
-    onyomi: "ぎょ", kunyomi: "さかな / うお", contoh_kalimat: "きょうの しょくどうの ひるごはん は さかな の りょうり です"
-  },
-  {
-    id: 2, part: 1, target: "肉", context: "肉", opts: ["さかな", "にく", "たまご", "みず"], ans: 1, arti: "Daging", exp: "漢字「肉」の読み方は「にく」です。",
-    onyomi: "にく", kunyomi: "-", contoh_kalimat: "スーパー で とり にく と ぎゅう にく を かいました"
-  },
-  {
-    id: 3, part: 1, target: "卵", context: "卵", opts: ["さかな", "にく", "たまご", "みず"], ans: 2, arti: "Telur", exp: "漢字「卵」の読み方は「たまご」です。",
-    onyomi: "らん", kunyomi: "たまご", contoh_kalimat: "あさごはん に たまご を ふたつ たべました"
-  },
-  {
-    id: 4, part: 1, target: "水", context: "水", opts: ["さかな", "にく", "たまご", "みず"], ans: 3, arti: "Air", exp: "漢字「水」の読み方は「みず」です。",
-    onyomi: "すい", kunyomi: "みず", contoh_kalimat: "しごと の あいま に つめたい みず を のみます"
-  },
-  {
-    id: 5, part: 1, target: "食べます", context: "食べます", opts: ["たべます", "のみます", "いきます", "きます"], ans: 0, arti: "Makan", exp: "漢字「食べます」の読み方は「たべます」です。",
-    onyomi: "しょく", kunyomi: "た・べる", contoh_kalimat: "じむしょ の きゅうけいしつ で おべんとう を たべます"
-  },
-  {
-    id: 6, part: 1, target: "飲みます", context: "飲みます", opts: ["たべます", "のみます", "いきます", "きます"], ans: 1, arti: "Minum", exp: "漢字「飲みます」の読み方は「のみます」です。",
-    onyomi: "いん", kunyomi: "の・む", contoh_kalimat: "こうじょう で しごと が おわった あと に おちゃ を のみます"
-  },
-  {
-    id: 7, part: 1, target: "大きい", context: "大きい", opts: ["ちいさい", "あたらしい", "おおきい", "ふるい"], ans: 2, arti: "Besar", exp: "漢字「大きい」の読み方は「おおきい」です。",
-    onyomi: "だい / たい", kunyomi: "おお・きい", contoh_kalimat: "この にもつ は おおきい ので ふたり で はこびましょう"
-  },
-  {
-    id: 8, part: 1, target: "小さい", context: "小さい", opts: ["ちいさい", "おおきい", "あたらしい", "ふるい"], ans: 0, arti: "Kecil", exp: "漢字「小さい」の読み方は「ちいさい」です。",
-    onyomi: "しょう", kunyomi: "ちい・さい / こ / お", contoh_kalimat: "ちいさい ぶひん を おとさない ように ちゅうい してください"
-  },
-  {
-    id: 9, part: 1, target: "新しい", context: "新しい", opts: ["ふるい", "あたらしい", "おおきい", "ちいさい"], ans: 1, arti: "Baru", exp: "漢字「新しい」の読み方は「あたらしい」です。",
-    onyomi: "しん", kunyomi: "あたらしい / あら・た", contoh_kalimat: "らいしゅう から あたらしい きかい を つかって しごと を します"
-  },
-  {
-    id: 10, part: 1, target: "古い", context: "古い", opts: ["あたらしい", "おおきい", "ちいさい", "ふるい"], ans: 3, arti: "Lama / Tua", exp: "漢字「古い」の読み方は「ふるい」です。",
-    onyomi: "こ", kunyomi: "ふる・い", contoh_kalimat: "この ふるい パソコン を あたらしい の に こうかん します"
-  },
-  {
-    id: 11, part: 1, target: "～時", context: "～時", opts: ["～ふん", "～じ", "～はん", "～ねん"], ans: 1, arti: "Jam ~", exp: "漢字「～時」の読み方は「～じ」です。",
-    onyomi: "じ", kunyomi: "とき", contoh_kalimat: "まいあさ はちじ に こうじょう に とうちゃく します"
-  },
-  {
-    id: 12, part: 1, target: "～分", context: "～分", opts: ["～ふん / ぷん / ぶん", "～じ", "～はん", "～ねん"], ans: 0, arti: "Menit / Bagian ~", exp: "漢字「～分」の読み方は「～ふん/ぷん/ぶん」です。",
-    onyomi: "ぶん / ふん / ぶ", kunyomi: "わ・かる / わ・ける", contoh_kalimat: "じゅっぷん きゅうけい してから しごと を さいかい します"
-  },
-  {
-    id: 13, part: 1, target: "～半", context: "～半", opts: ["～じ", "～はん", "～ふん", "～がつ"], ans: 1, arti: "Setengah ~", exp: "漢字「～半」の読み方は「～はん」です。",
-    onyomi: "はん", kunyomi: "なか・ば", contoh_kalimat: "ひるやすみ は じゅうにじ はん から はじまります"
-  },
-  {
-    id: 14, part: 1, target: "月曜日", context: "月曜日", opts: ["かようび", "げつようび", "すいようび", "もくようび"], ans: 1, arti: "Hari Senin", exp: "漢字「月曜日」の読み方は「げつようび」です。",
-    onyomi: "げつ / がつ", kunyomi: "つき", contoh_kalimat: "げつようび の あさ に しゅうれん が あります"
-  },
-  {
-    id: 15, part: 1, target: "火曜日", context: "火曜日", opts: ["かようび", "げつようび", "すいようび", "きんようび"], ans: 0, arti: "Hari Selasa", exp: "漢字「火曜日」の読み方は「かようび」です。",
-    onyomi: "か", kunyomi: "ひ", contoh_kalimat: "かようび に ごみ を ださなければ なりません"
-  },
-  {
-    id: 16, part: 1, target: "水曜日", context: "水曜日", opts: ["かようび", "もくようび", "すいようび", "どようび"], ans: 2, arti: "Hari Rabu", exp: "漢字「水曜日」の読み方は「すいようび」です。",
-    onyomi: "すい", kunyomi: "みず", contoh_kalimat: "すいようび は ざんぎょう が なく て はやく かえれます"
-  },
-  {
-    id: 17, part: 1, target: "木曜日", context: "木曜日", opts: ["すいようび", "きんようび", "にちようび", "もくようび"], ans: 3, arti: "Hari Kamis", exp: "漢字「木曜日」の読み方は「もくようび」です。",
-    onyomi: "もく / ぼく", kunyomi: "き", contoh_kalimat: "もくようび の めんだん で しごと の そうだん を します"
-  },
-  {
-    id: 18, part: 1, target: "金曜日", context: "金曜日", opts: ["きんようび", "もくようび", "どようび", "げつようび"], ans: 0, arti: "Hari Jumat", exp: "漢字「金曜日」の読み方は「きんようび」です。",
-    onyomi: "きん / こん", kunyomi: "かね / かな", contoh_kalimat: "きんようび の ゆうがた に しゅうえい の そうじ を します"
-  },
-  {
-    id: 19, part: 1, target: "土曜日", context: "土曜日", opts: ["きんようび", "どようび", "にちようび", "かようび"], ans: 1, arti: "Hari Sabtu", exp: "漢字「土曜日」の読み方は「どようび」です。",
-    onyomi: "ど / と", kunyomi: "つち", contoh_kalimat: "どようび は ともだち と かいもの に いきます"
-  },
-  {
-    id: 20, part: 1, target: "日曜日", context: "日曜日", opts: ["どようび", "げつようび", "にちようび", "すいようび"], ans: 2, arti: "Hari Minggu", exp: "漢字「日曜日」の読み方は「にちようび」です。",
-    onyomi: "にち / じつ", kunyomi: "ひ / か", contoh_kalimat: "にちようび は へや で ゆっくり やすみます"
-  },
-  {
-    id: 21, part: 1, target: "言います", context: "言います", opts: ["いいます", "はなします", "よみます", "みます"], ans: 0, arti: "Berkata / Mengatakan", exp: "漢字「言います」の読み方は「いいま」です。",
-    onyomi: "げん / ごん", kunyomi: "い・う / こと", contoh_kalimat: "わからない こと が あったら すぐ に てんちょう に いいま"
-  },
-  {
-    id: 22, part: 1, target: "話します", context: "話します", opts: ["いいま", "はなします", "よみます", "ききます"], ans: 1, arti: "Berbicara", exp: "漢字「話します」の読み方は「はなします」です。",
-    onyomi: "わ", kunyomi: "はな・す / はなし", contoh_kalimat: "にほんご で じょうず に はなせる ように れんしゅう します"
-  },
-  {
-    id: 23, part: 1, target: "読みます", context: "読みます", opts: ["かきます", "ききます", "よみます", "みます"], ans: 2, arti: "Membaca", exp: "漢字「読みます」の読み方は「よみます」です。",
-    onyomi: "どく / とく", kunyomi: "よ・む", contoh_kalimat: "あんぜん の マニュアル を しっかり よみます"
-  },
-  {
-    id: 24, part: 1, target: "見ます", context: "見ます", opts: ["ききます", "よみます", "かきます", "みます"], ans: 3, arti: "Melihat", exp: "漢字「見ます」の読み方は「みます」です。",
-    onyomi: "けん", kunyomi: "み・る", contoh_kalimat: "しぎょう まえ に けいじばん を みます"
-  },
-  {
-    id: 25, part: 1, target: "聞きます", context: "聞きます", opts: ["ききます", "みます", "よみます", "はなします"], ans: 0, arti: "Mendengar / Bertanya", exp: "漢字「聞きます」の読み方は「ききます」です。",
-    onyomi: "ぶん / もん", kunyomi: "き・く", contoh_kalimat: "せんぱい の しじ を よく ききます"
-  },
-  {
-    id: 26, part: 1, target: "書きます", context: "書きます", opts: ["よみます", "かきます", "ききます", "はなします"], ans: 1, arti: "Menulis", exp: "漢字「書きます」の読み方は「かきます」です。",
-    onyomi: "しょ", kunyomi: "か・く", contoh_kalimat: "きょう の しごと の ほうこくしょ を かきます"
-  },
-  {
-    id: 27, part: 1, target: "一", context: "一", opts: ["に", "さん", "いち", "よん"], ans: 2, arti: "Satu", exp: "漢字「一」の読み方は「いち」です。",
-    onyomi: "いち / いつ", kunyomi: "ひと / ひと・つ", contoh_kalimat: "ぶひん を いち ぶつ ずつ てんけん してください"
-  },
-  {
-    id: 28, part: 1, target: "二", context: "二", opts: ["いち", "さん", "よん", "に"], ans: 3, arti: "Dua", exp: "漢字「二」の読み方は「に」です。",
-    onyomi: "に", kunyomi: "ふた / ふた・つ", contoh_kalimat: "かいぎ は に かい の へや で おこなわれます"
-  },
-  {
-    id: 29, part: 1, target: "三", context: "三", opts: ["さん", "に", "よん", "ご"], ans: 0, arti: "Tiga", exp: "漢字「三」の読み方は「さん」です。",
-    onyomi: "さん", kunyomi: "み / みっ・つ", contoh_kalimat: "さん かげつ の けんしゅう が はじまります"
-  },
-  {
-    id: 30, part: 1, target: "四", context: "四", opts: ["さん", "よん / し", "ご", "ろく"], ans: 1, arti: "Empat", exp: "漢字「四」の読み方は「よん/し」です。",
-    onyomi: "し", kunyomi: "よん / よ / よっ・つ", contoh_kalimat: "よん にん で チーム を くんで しごと を します"
-  },
-  {
-    id: 31, part: 1, target: "五", context: "五", opts: ["よん", "ろく", "ご", "なな"], ans: 2, arti: "Lima", exp: "漢字「五」の読み方は「ご」です。",
-    onyomi: "ご", kunyomi: "いつ / いつ・つ", contoh_kalimat: "ご じ に なったら しごと が おわります"
-  },
-  {
-    id: 32, part: 1, target: "六", context: "六", opts: ["ご", "なな", "はち", "ろく"], ans: 3, arti: "Enam", exp: "漢字「六」の読み方は「ろく」です。",
-    onyomi: "ろく", kunyomi: "む / むっ・つ", contoh_kalimat: "ろく げつ に にほん に きました"
-  },
-  {
-    id: 33, part: 1, target: "七", context: "七", opts: ["なな / しち", "ろく", "はち", "きゅう"], ans: 0, arti: "Tujuh", exp: "漢字「七」の読み方は「なな/しち」です。",
-    onyomi: "しち", kunyomi: "なな / なな・つ", contoh_kalimat: "あさ なな じ に おきて したく を します"
-  },
-  {
-    id: 34, part: 1, target: "八", context: "八", opts: ["なな", "はち", "きゅう", "じゅう"], ans: 1, arti: "Delapan", exp: "漢字「八」の読み方は「はち」です。",
-    onyomi: "はち", kunyomi: "や / やっ・つ", contoh_kalimat: "はち じ から あさの あいさつ を します"
-  },
-  {
-    id: 35, part: 1, target: "九", context: "九", opts: ["はち", "じゅう", "きゅう / く", "ろく"], ans: 2, arti: "Sembilan", exp: "漢字「九」の読み方は「きゅう/く」です。",
-    onyomi: "きゅう / く", kunyomi: "ここの / ここの・つ", contoh_kalimat: "きゅう じ まで に しりょう を つくらなければ なりません"
-  },
-  {
-    id: 36, part: 1, target: "十", context: "十", opts: ["きゅう", "ひゃく", "せん", "じゅう"], ans: 3, arti: "Sepuluh", exp: "漢字「十」の読み方は「じゅう」です。",
-    onyomi: "じゅう / じっ", kunyomi: "とお", contoh_kalimat: "じゅう ぶん やすんで から つぎ の しごと を します"
-  },
-  {
-    id: 37, part: 1, target: "～年", context: "～年", opts: ["～ねん", "～がつ", "～にち", "～じ"], ans: 0, arti: "Tahun ~", exp: "漢字「～年」の読み方は「～ねん」です。",
-    onyomi: "ねん", kunyomi: "とし", contoh_kalimat: "にほん に さん ねん かん いんせい として たんざい します"
-  },
-  {
-    id: 38, part: 1, target: "～月", context: "～月", opts: ["～ねん", "～がつ", "～にち", "～ふん"], ans: 1, arti: "Bulan ~", exp: "漢字「～月」の読み方は「～がつ」です。",
-    onyomi: "げつ / がつ", kunyomi: "つき", contoh_kalimat: "らいげつ の よん がつ から あたしい ぶしょ に いきます"
-  },
-  {
-    id: 39, part: 1, target: "～日", context: "～日", opts: ["～がつ", "～ねん", "～にち / ～か", "～じ"], ans: 2, arti: "Tanggal / Hari ~", exp: "漢字「～日」の読み方は「～にち」です。",
-    onyomi: "にち / じつ", kunyomi: "ひ / か", contoh_kalimat: "じゅうご にち は きゅうりょうび です"
-  },
-  {
-    id: 40, part: 1, target: "東", context: "東", opts: ["にし", "みなみ", "きた", "ひがし"], ans: 3, arti: "Timur", exp: "漢字「東」の読み方は「ひがし」です。",
-    onyomi: "とう", kunyomi: "ひがし", contoh_kalimat: "こうじょう の ひがし ぐち で しゅうごう してください"
-  },
-  {
-    id: 41, part: 1, target: "西", context: "西", opts: ["にし", "ひがし", "みなみ", "きた"], ans: 0, arti: "Barat", exp: "漢字「西」の読み方は「にし」です。",
-    onyomi: "せい / さい", kunyomi: "にし", contoh_kalimat: "にし えき から バス に のって かいしゃ へ いきます"
-  },
-  {
-    id: 42, part: 1, target: "南", context: "南", opts: ["きた", "みなみ", "ひがし", "にし"], ans: 1, arti: "Selatan", exp: "漢字「南」の読み方は「みなみ」です。",
-    onyomi: "なん", kunyomi: "みなみ", contoh_kalimat: "みなみ の むき の まど から あかるい ひ が はいります"
-  },
-  {
-    id: 43, part: 1, target: "北", context: "北", opts: ["みなみ", "ひがし", "きた", "にし"], ans: 2, arti: "Utara", exp: "漢字「北」の読み方は「きた」です。",
-    onyomi: "ほく", kunyomi: "きた", contoh_kalimat: "きた ぐち の まえ で ともだち と まちあわせ します"
-  },
-  {
-    id: 44, part: 1, target: "～口", context: "～口", opts: ["～くち", "～め", "～て", "～ぐち"], ans: 3, arti: "Pintu / Mulut ~", exp: "漢字「～口」の読み方は「～ぐち」です。",
-    onyomi: "こう", kunyomi: "くち", contoh_kalimat: "かいしゃ の かんこう ぐち で かーど を かざします"
-  },
-  {
-    id: 45, part: 1, target: "東口", context: "東口", opts: ["ひがしぐち", "にしぐち", "みなみぐち", "きたぐち"], ans: 0, arti: "Pintu Keluar Timur", exp: "漢字「東口」の読み方は「ひがしぐち」です。",
-    onyomi: "とうこう", kunyomi: "ひがしぐち", contoh_kalimat: "えき の ひがしぐち に コンビニ が あります"
-  },
-  {
-    id: 46, part: 1, target: "西口", context: "西口", opts: ["ひがしぐち", "にしぐち", "みなみぐち", "きたぐち"], ans: 1, arti: "Pintu Keluar Barat", exp: "漢字「西口」の読み方は「にしぐち」です。",
-    onyomi: "せいこう", kunyomi: "にしぐち", contoh_kalimat: "にしぐち の バス てい から かいしゃ の バス に のります"
-  },
-  {
-    id: 47, part: 1, target: "南口", context: "南口", opts: ["きたぐち", "ひがしぐち", "みなみぐち", "にしぐち"], ans: 2, arti: "Pintu Keluar Selatan", exp: "漢字「南口」の読み方は「みなみぐち」です。",
-    onyomi: "なんこう", kunyomi: "みなみぐち", contoh_kalimat: "みなみぐち を でて すぐ の ところ に たかい びる が あります"
-  },
-  {
-    id: 48, part: 1, target: "北口", context: "北口", opts: ["みなみぐち", "ひがしぐち", "にしぐち", "きたぐち"], ans: 3, arti: "Pintu Keluar Utara", exp: "漢字「北口」の読み方は「きたぐち」です。",
-    onyomi: "ほっこう", kunyomi: "きたぐち", contoh_kalimat: "きたぐち は よる に なると すこし くらい です"
-  },
-  {
-    id: 49, part: 1, target: "買います", context: "買います", opts: ["かいます", "うります", "みます", "いきます"], ans: 0, arti: "Membeli", exp: "漢字「買います」の読み方は「かいます」です。",
-    onyomi: "ばい", kunyomi: "か・う", contoh_kalimat: "きゅうけい じかん に じどうはんばいき で のみもの を かいます"
-  },
-  {
-    id: 50, part: 1, target: "買い物", context: "買い物", opts: ["たべもの", "かいもの", "のみもの", "いいもの"], ans: 1, arti: "Belanja", exp: "漢字「買い物」の読み方は「かいもの」です。",
-    onyomi: "ばいぶつ", kunyomi: "かいもの", contoh_kalimat: "しごと が おわった あと で スーパー に かいもの に いきます"
-  },
-  {
-    id: 51, part: 1, target: "お金", context: "お金", opts: ["おちゃ", "おさけ", "おかね", "おゆ"], ans: 2, arti: "Uang", exp: "漢字「お金」の読み方は「おかね」です。",
-    onyomi: "きん / こん", kunyomi: "かね / かな", contoh_kalimat: "ＡＴＭ で おかね を おろして きます"
-  },
-  {
-    id: 52, part: 1, target: "～円", context: "～円", opts: ["～どれ", "～ペソ", "～りぴあ", "～えん"], ans: 3, arti: "Yen ~", exp: "漢字「～円」の読み方は「～えん」です。",
-    onyomi: "えん", kunyomi: "まる・い", contoh_kalimat: "この おべんとう は ごひゃく えん です"
-  },
-  {
-    id: 53, part: 1, target: "百", context: "百", opts: ["ひゃく", "せん", "まん", "じゅう"], ans: 0, arti: "Ratus / Seratus", exp: "漢字「百」の読み方は「ひゃく」です。",
-    onyomi: "ひゃく", kunyomi: "-", contoh_kalimat: "この ぶひん は ひゃく こ ずつ はこ に いれて くだい"
-  },
-  {
-    id: 54, part: 1, target: "千", context: "千", opts: ["ひゃく", "せん", "まん", "じゅう"], ans: 1, arti: "Ribu / Seribu", exp: "漢字「千」の読み方は「せん」です。",
-    onyomi: "せん", kunyomi: "ち", contoh_kalimat: "かいしゃ まで の でんしゃ だい は せん えん です"
-  },
-  {
-    id: 55, part: 1, target: "万", context: "万", opts: ["せん", "ひゃく", "まん", "じゅう"], ans: 2, arti: "Puluh Ribu", exp: "漢字「万」の読み方は「まん」です。",
-    onyomi: "まん / ばん", kunyomi: "-", contoh_kalimat: "いっかつ で じゅうまん えん の ひ費用 が かかります"
-  },
-  {
-    id: 56, part: 1, target: "百円", context: "百円", opts: ["せんえん", "いちまんえん", "じゅうえん", "ひゃくえん"], ans: 3, arti: "100 Yen", exp: "漢字「百円」の読み方は「ひゃくえん」です。",
-    onyomi: "ひゃくえん", kunyomi: "ひゃくえん", contoh_kalimat: "ひゃくえん ショップ で しごと の ぐーず を かいました"
-  },
-  {
-    id: 57, part: 1, target: "千円", context: "千円", opts: ["せんえん", "ひゃくえん", "いちまんえん", "ごひゃくえん"], ans: 0, arti: "1.000 Yen", exp: "漢字「千円」の読み方は「せんえん」です。",
-    onyomi: "せんえん", kunyomi: "せんえん", contoh_kalimat: "せんえん さつ を チャージ して チャージ しました"
-  },
-  {
-    id: 58, part: 1, target: "一万円", context: "一万円", opts: ["せんえん", "いちまんえん", "ひゃくえん", "ご千円"], ans: 1, arti: "10.000 Yen", exp: "漢字「一万円」の読み方は「いちまんえん」です。",
-    onyomi: "いちまんえん", kunyomi: "いちまんえん", contoh_kalimat: "いちまんえん さつ おつり を もらいます"
-  },
-  {
-    id: 59, part: 1, target: "行きます", context: "行きます", opts: ["きます", "かえります", "いきます", "たべます"], ans: 2, arti: "Pergi", exp: "漢字「行きます」の読み方は「いきます」です。",
-    onyomi: "こう / ぎょう", kunyomi: "い・く / おこな・う", contoh_kalimat: "まいあさ じのうしゃ で かいしゃ に いきます"
-  },
-  {
-    id: 60, part: 1, target: "来ます", context: "来ます", opts: ["いきます", "かえります", "みます", "きます"], ans: 3, arti: "Datang", exp: "漢字「来ます」の読み方は「きます」です。",
-    onyomi: "らい", kunyomi: "く・る / き・ます", contoh_kalimat: "あした かんり だんたい の かた が きます"
-  },
-  {
-    id: 61, part: 1, target: "会います", context: "会います", opts: ["あいます", "はなします", "ききます", "みます"], ans: 0, arti: "Bertemu", exp: "漢字「会います」の読み方は「あいます」です。",
-    onyomi: "かい / え", kunyomi: "あ・う", contoh_kalimat: "ロビー で おきゃくさま に あいます"
-  },
-  {
-    id: 62, part: 1, target: "休みます", context: "休みます", opts: ["はたらきます", "やすみます", "いきます", "のみます"], ans: 1, arti: "Istirahat / Libur", exp: "漢字「休みます」の読み方は「やすみます」です。",
-    onyomi: "きゅう", kunyomi: "やす・む", contoh_kalimat: "体調 が わるい とき は かいしゃ を やすみます"
-  },
-  {
-    id: 63, part: 1, target: "日本", context: "日本", opts: ["とうきょう", "ちゅうごく", "にほん / にっぽん", "かんこく"], ans: 2, arti: "Jepang", exp: "漢字「日本」の読み方は「にほん」です。",
-    onyomi: "にほん", kunyomi: "にほん", contoh_kalimat: "にほん の くらし に だいぶ なれました"
-  },
-  {
-    id: 64, part: 1, target: "東京", context: "東京", opts: ["にほん", "きょうと", "おおさか", "とうきょう"], ans: 3, arti: "Tokyo", exp: "漢字「東京」の読み方は「とうきょう」です。",
-    onyomi: "とうきょう", kunyomi: "とうきょう", contoh_kalimat: "やすみ の ひ に とうきょう へ あそび に いきます"
-  },
-  {
-    id: 65, part: 1, target: "私", context: "私", opts: ["わたし", "あなた", "かれ", "かのじょ"], ans: 0, arti: "Saya", exp: "漢字「私」の読み方は「わたし」です。",
-    onyomi: "し", kunyomi: "わたし / わたくし", contoh_kalimat: "わたし は こうじょう で ぶひん の けんさ を しています"
-  },
-  {
-    id: 66, part: 1, target: "父", context: "父", opts: ["はは", "ちち", "あに", "おとうと"], ans: 1, arti: "Ayah (Saya)", exp: "漢字「父」の読み方は「ちち」です。",
-    onyomi: "ふ", kunyomi: "ちち", contoh_kalimat: "くに の ちち に でんわ を しました"
-  },
-  {
-    id: 67, part: 1, target: "母", context: "母", opts: ["ちち", "あね", "はは", "いもうと"], ans: 2, arti: "Ibu (Saya)", exp: "漢字「母」の読み方は「はは」です。",
-    onyomi: "ぼ", kunyomi: "はは", contoh_kalimat: "はは は わたし の しんぱい を しています"
-  },
-  {
-    id: 68, part: 1, target: "子供", context: "子供", opts: ["おとこ", "おんな", "ひと", "こども"], ans: 3, arti: "Anak-anak", exp: "漢字「子供」の読み方は「こども」です。",
-    onyomi: "じきょう", kunyomi: "こども", contoh_kalimat: "こうえん で こども たち が あそんでいます"
-  },
-  {
-    id: 69, part: 1, target: "男", context: "男", opts: ["おとこ", "おんな", "ひと", "こども"], ans: 0, arti: "Laki-laki", exp: "漢字「男」の読み方は「おとこ」です。",
-    onyomi: "だん / なん", kunyomi: "おとこ", contoh_kalimat: "あの おとこ の ひと は あたらしい しゃいん です"
-  },
-  {
-    id: 70, part: 1, target: "女", context: "女", opts: ["おとこ", "おんな", "ひと", "こども"], ans: 1, arti: "Perempuan", exp: "漢字「女」の読み方は「おんな」です。",
-    onyomi: "じょ / にょ", kunyomi: "おんな / め", contoh_kalimat: "おんな の ひと の せんぱい に しごと を ならいま"
-  },
-  {
-    id: 71, part: 1, target: "人", context: "人", opts: ["おとこ", "おんな", "ひと", "こども"], ans: 2, arti: "Orang", exp: "漢字「人」の読み方は「ひと」です。",
-    onyomi: "じん / にん", kunyomi: "ひと", contoh_kalimat: "あの ひと は とても やさしい です"
-  },
-  {
-    id: 72, part: 1, target: "お父さん", context: "お父さん", opts: ["おかあさん", "おにいさん", "おねえさん", "おとうさん"], ans: 3, arti: "Ayah (Orang lain/Panggilan)", exp: "漢字「お父さん」の読み方は「おとうさん」です。",
-    onyomi: "おとうさん", kunyomi: "おとうさん", contoh_kalimat: "たなか さん の おとうさん は げんき です か"
-  },
-  {
-    id: 73, part: 1, target: "お母さん", context: "お母さん", opts: ["おかあさん", "おとうさん", "おねえさん", "おにいさん"], ans: 0, arti: "Ibu (Orang lain/Panggilan)", exp: "漢字「お母さん」の読み方は「おかあさん」です。",
-    onyomi: "おかあさん", kunyomi: "おかあさん", contoh_kalimat: "おかあさん に おべんとう を つくって もらいました"
-  },
-  {
-    id: 74, part: 1, target: "何人", context: "何人", opts: ["だれ", "なにじん / なんにん", "どこ", "いつ"], ans: 1, arti: "Berapa orang / Orang mana", exp: "漢字「何人」の読み方は「なんにん/なにじん」です。",
-    onyomi: "なんにん", kunyomi: "なにじん", contoh_kalimat: "きょう の かいぎ に なんにん しゅっせき します か"
-  },
-  {
-    id: 75, part: 1, target: "国", context: "国", opts: ["まち", "みせ", "くに", "いえ"], ans: 2, arti: "Negara", exp: "漢字「国」の読み方は「くに」です。",
-    onyomi: "こく", kunyomi: "くに", contoh_kalimat: "くに の かぞく に おくりもの を します"
-  },
-  {
-    id: 76, part: 1, target: "外国", context: "外国", opts: ["くに", "にほん", "ちゅうごく", "がいこく"], ans: 3, arti: "Luar Negeri", exp: "漢字「外国」の読み方は「がいこく」です。",
-    onyomi: "がいこく", kunyomi: "がいこく", contoh_kalimat: "がいこく じん じんざい の けんしゅう が あります"
-  },
-  {
-    id: 77, part: 1, target: "～語", context: "～語", opts: ["～ご", "～じん", "～こく", "～ほん"], ans: 0, arti: "Bahasa ~", exp: "漢字「～語」の読み方は「～ご」です。",
-    onyomi: "ご", kunyomi: "かた・わる", contoh_kalimat: "かいしゃ で は にほんご を はなします"
-  },
-  {
-    id: 78, part: 1, target: "日本語", context: "日本語", opts: ["えいご", "にほんご", "ちゅうごくご", "がいこくご"], ans: 1, arti: "Bahasa Jepang", exp: "漢字「日本語」の読み方は「にほんご」です。",
-    onyomi: "にほんご", kunyomi: "にほんご", contoh_kalimat: "にほんご の べんきょう を まいにち します"
-  },
-  {
-    id: 79, part: 1, target: "英語", context: "英語", opts: ["にほんご", "ちゅうごくご", "えいご", "かんこくご"], ans: 2, arti: "Bahasa Inggris", exp: "漢字「英語」の読み方は「えいご」です。",
-    onyomi: "えいご", kunyomi: "えいご", contoh_kalimat: "かれ は えいご も はなす こと が できます"
-  },
-  {
-    id: 80, part: 1, target: "中国語", context: "中国語", opts: ["にほんご", "えいご", "かんこくご", "ちゅうごくご"], ans: 3, arti: "Bahasa Mandarin", exp: "漢字「中国語」の読み方は「ちゅうごくご」です。",
-    onyomi: "ちゅうごくご", kunyomi: "ちゅうごくご", contoh_kalimat: "りょう の ともだち は ちゅうごくご を はなします"
-  },
-  {
-    id: 81, part: 1, target: "～人", context: "～人", opts: ["～じん / ～にん", "～ご", "～こく", "～さん"], ans: 0, arti: "Orang ~ (Kewarganegaraan / Jumlah)", exp: "漢字「～人」の読み方は「～じん/～にん」です。",
-    onyomi: "じん / にん", kunyomi: "ひと", contoh_kalimat: "こうじょう で さん にん の ぎのうじっしゅうせい が はたらいています"
-  },
-  {
-    id: 82, part: 1, target: "日本人", context: "日本人", opts: ["がいこくじん", "にほんじん", "ちゅうごくじん", "あめりかじん"], ans: 1, arti: "Orang Jepang", exp: "漢字「日本人」の読み方は「にほんじん」です。",
-    onyomi: "にほんじん", kunyomi: "にほんじん", contoh_kalimat: "にほんじん の しどういん から ていねい に おしえて もらいました"
-  },
-  {
-    id: 83, part: 1, target: "好き", context: "好き", opts: ["きらい", "いい", "すき", "わるい"], ans: 2, arti: "Suka", exp: "漢字「好き」の読み方は「すき」です。",
-    onyomi: "こう", kunyomi: "す・き / す・く", contoh_kalimat: "わたし は にほん の たべもの が すき です"
-  },
-  {
-    id: 84, part: 1, target: "本", context: "本", opts: ["ざっし", "しんぶん", "ぐーず", "ほん"], ans: 3, arti: "Buku", exp: "漢字「本」の読み方は「ほん」です。",
-    onyomi: "ほん", kunyomi: "もと", contoh_kalimat: "きょうかい の ほん を よんで べんきょう します"
-  },
-  {
-    id: 85, part: 1, target: "読書", context: "読書", opts: ["どくしょ", "べんきょう", "しごと", "かいもの"], ans: 0, arti: "Membaca Buku", exp: "漢字「読書」の読み方は「どくしょ」です。",
-    onyomi: "どくしょ", kunyomi: "どくしょ", contoh_kalimat: "わたし の しゅみ は どくしょ です"
-  },
-  {
-    id: 86, part: 1, target: "何", context: "何", opts: ["だれ", "なに / なん", "どこ", "いつ"], ans: 1, arti: "Apa", exp: "漢字「何」の読み方は「なに/なん」です。",
-    onyomi: "か", kunyomi: "なに / なん", contoh_kalimat: "わからない こと が あったら なに でも きいて くだい"
-  },
-  {
-    id: 87, part: 1, target: "春", context: "春", opts: ["なつ", "あき", "はる", "ふゆ"], ans: 2, arti: "Musim Semi", exp: "漢字「春」の読み方は「はる」です。",
-    onyomi: "しゅん", kunyomi: "はる", contoh_kalimat: "はる に なると さくら が さきます"
-  },
-  {
-    id: 88, part: 1, target: "夏", context: "夏", opts: ["はる", "あき", "ふゆ", "なつ"], ans: 3, arti: "Musim Panas", exp: "漢字「夏」の読み方は「なつ」です。",
-    onyomi: "か / げ", kunyomi: "なつ", contoh_kalimat: "なつ の こうじょう は とても あつい です"
-  },
-  {
-    id: 89, part: 1, target: "秋", context: "秋", opts: ["あき", "はる", "なつ", "ふゆ"], ans: 0, arti: "Musim Gugur", exp: "漢字「秋」の読み方は「あき」です。",
-    onyomi: "しゅう", kunyomi: "あき", contoh_kalimat: "あき は すずしくて しごと が しやすい です"
-  },
-  {
-    id: 90, part: 1, target: "冬", context: "冬", opts: ["はる", "ふゆ", "なつ", "あき"], ans: 1, arti: "Musim Dingin", exp: "漢字「冬」の読み方は「ふゆ」です。",
-    onyomi: "とう", kunyomi: "ふゆ", contoh_kalimat: "ふゆ は さむい ので コート を きて しゅっきん します"
-  },
-  {
-    id: 91, part: 1, target: "今", context: "今", opts: ["きょう", "あした", "いま", "きのう"], ans: 2, arti: "Sekarang", exp: "漢字「今」の読み方は「いま」です。",
-    onyomi: "こん / きん", kunyomi: "いま", contoh_kalimat: "いま から あたらしい ぶひん の くみたて を はじめます"
-  },
-  {
-    id: 92, part: 1, target: "花", context: "花", opts: ["き", "くさ", "うみ", "はな"], ans: 3, arti: "Bunga", exp: "漢字「花」の読み方は「はな」です。",
-    onyomi: "か", kunyomi: "はな", contoh_kalimat: "こうえん に きれい な はな が さいています"
-  },
-  {
-    id: 93, part: 1, target: "海", context: "海", opts: ["うみ", "やま", "かわ", "そら"], ans: 0, arti: "Laut", exp: "漢字「海」の読み方は「うみ」です。",
-    onyomi: "かい", kunyomi: "うみ", contoh_kalimat: "やすみ の ひ に ともだち と うみ へ いきました"
-  },
-  {
-    id: 94, part: 1, target: "山", context: "山", opts: ["かわ", "やま", "うみ", "そら"], ans: 1, arti: "Gunung", exp: "漢字「山」の読み方は「やま」です。",
-    onyomi: "さん / せん", kunyomi: "やま", contoh_kalimat: "わたし の ふるさと に は たかい やま が あります"
-  },
-  {
-    id: 95, part: 1, target: "川", context: "川", opts: ["やま", "うみ", "かわ", "そら"], ans: 2, arti: "Sungai", exp: "漢字「川」の読み方は「かわ」です。",
-    onyomi: "せん", kunyomi: "かわ", contoh_kalimat: "かいしゃ の ちかく に かわ が ながれています"
-  },
-  {
-    id: 96, part: 1, target: "今日", context: "今日", opts: ["あした", "きのう", "いま", "きょう"], ans: 3, arti: "Hari Ini", exp: "漢字「今日」の読み方は「きょう」です。",
-    onyomi: "きょう", kunyomi: "きょう", contoh_kalimat: "きょう の しごと は ごじ で おわります"
-  },
-  {
-    id: 97, part: 1, target: "天気", context: "天気", opts: ["てんき", "あめ", "ゆき", "かぜ"], ans: 0, arti: "Cuaca", exp: "漢字「天気」の読み方は「てんき」です。",
-    onyomi: "てんき", kunyomi: "てんき", contoh_kalimat: "きょう は てんき が いい ので じてんしゃ で いきます"
-  },
-  {
-    id: 98, part: 1, target: "晴れ", context: "晴れ", opts: ["あめ", "はれ", "ゆき", "くもり"], ans: 1, arti: "Cerah", exp: "漢字「晴れ」の読み方は「はれ」です。",
-    onyomi: "せい", kunyomi: "は・れる", contoh_kalimat: "あした は はれ の よほう です"
-  },
-  {
-    id: 99, part: 1, target: "雨", context: "雨", opts: ["ゆき", "はれ", "あめ", "くも"], ans: 2, arti: "Hujan", exp: "漢字「雨」の読み方は「あめ」です。",
-    onyomi: "う", kunyomi: "あめ / あま", contoh_kalimat: "あめ が ふっている ので かさ を もっていきます"
-  },
-  {
-    id: 100, part: 1, target: "雪", context: "雪", opts: ["あめ", "はれ", "かぜ", "ゆき"], ans: 3, arti: "Salju", exp: "漢字「雪」の読み方は「ゆき」です。",
-    onyomi: "せつ", kunyomi: "ゆき", contoh_kalimat: "ふゆ に なると ゆき が ふります"
-  },
-  {
-    id: 101, part: 1, target: "雲", context: "雲", opts: ["くも", "そら", "かぜ", "あめ"], ans: 0, arti: "Awan", exp: "漢字「雲」の読み方は「くも」です。",
-    onyomi: "うん", kunyomi: "くも", contoh_kalimat: "そら に しろい くも が たくさん あります"
-  },
-  {
-    id: 102, part: 1, target: "風", context: "風", opts: ["あめ", "かぜ", "ゆき", "そら"], ans: 1, arti: "Angin", exp: "漢字「風」の読み方は「かぜ」です。",
-    onyomi: "ふう / ふ", kunyomi: "かぜ / かざ", contoh_kalimat: "きょう は つよい かぜ が ふいています"
-  },
-  {
-    id: 103, part: 1, target: "空", context: "空", opts: ["うみ", "やま", "そら", "くも"], ans: 2, arti: "Langit", exp: "漢字「空」の読み方は「そら」です。",
-    onyomi: "くう", kunyomi: "そら / あ・く / から", contoh_kalimat: "あおい そら が とても きれい です"
-  },
-  {
-    id: 104, part: 1, target: "町", context: "町", opts: ["みせ", "くに", "いえ", "まち"], ans: 3, arti: "Kota / Kota Kecil", exp: "漢字「町」の読み方は「まち」です。",
-    onyomi: "ちょう", kunyomi: "まち", contoh_kalimat: "わたしたち の りょう は しずか な まち に あります"
-  },
-  {
-    id: 105, part: 1, target: "店", context: "店", opts: ["みせ", "まち", "いえ", "かいしゃ"], ans: 0, arti: "Toko", exp: "漢字「店」の読み方は「みせ」です。",
-    onyomi: "てん", kunyomi: "みせ", contoh_kalimat: "あのおいしい みせ で ひるごはん を たべましょう"
-  },
-  {
-    id: 106, part: 1, target: "人気", context: "人気", opts: ["てんき", "にんき", "げんき", "きもち"], ans: 1, arti: "Populer", exp: "漢字「人気」の読み方は「にんき」です。",
-    onyomi: "にんき", kunyomi: "にんき", contoh_kalimat: "この レストラン は とても にんき が あります"
-  },
-  {
-    id: 107, part: 1, target: "多い", context: "多い", opts: ["すくない", "たかい", "おおい", "やすい"], ans: 2, arti: "Banyak", exp: "漢字「多い」の読み方は「おおい」です。",
-    onyomi: "た", kunyomi: "おお・い", contoh_kalimat: "げつようび は しごと の しりょう が おおい です"
-  },
-  {
-    id: 108, part: 1, target: "少ない", context: "少ない", opts: ["おおい", "ちいさい", "ふるい", "すくない"], ans: 3, arti: "Sedikit", exp: "漢字「少ない」の読み方は「すくない」です。",
-    onyomi: "しょう", kunyomi: "すく・ない / すこ・し", contoh_kalimat: "きょう は ざんぎょう する ひと が すくない です"
-  },
-  {
-    id: 109, part: 1, target: "高い", context: "高い", opts: ["たかい", "やすい", "おおきい", "あたらしい"], ans: 0, arti: "Tinggi / Mahal", exp: "漢字「高い」の読み方は「たかい」です。",
-    onyomi: "こう", kunyomi: "たか・い", contoh_kalimat: "この ぶひん は たかい ので ていねい に あつかって くだい"
-  },
-  {
-    id: 110, part: 1, target: "安い", context: "安い", opts: ["たかい", "やすい", "ちいさい", "ふるい"], ans: 1, arti: "Murah", exp: "漢字「安い」の読み方は「やすい」です。",
-    onyomi: "あん", kunyomi: "やす・い", contoh_kalimat: "あの スーパー は やさい が やすい です"
-  }
-];
-
-let userAnswers = {};
-let totalAnswered = 0;
-let timerInterval = null;
-let timeLeft = 1200; // 20 Menit (dalam detik)
-
-// Fisher-Yates Shuffle Algorithm
+// Fungsi acak array (Fisher-Yates Shuffle)
 function shuffleArray(array) {
-  let shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  let curId = array.length;
+  // Clone array agar tidak merusak data asli jika diperlukan
+  let shuffled = [...array]; 
+  while (0 !== curId) {
+    let randId = Math.floor(Math.random() * curId);
+    curId -= 1;
+    let tmp = shuffled[curId];
+    shuffled[curId] = shuffled[randId];
+    shuffled[randId] = tmp;
   }
   return shuffled;
 }
 
-function startQuiz() {
-    const name = document.getElementById('userName').value.trim();
-    const id = document.getElementById('userId').value.trim();
-
-    if (!name || !id) {
-        alert("Harap lengkapi Nama dan Email/ID Peserta sebelum memulai!");
-        return;
-    }
-
-    document.getElementById('welcomeCard').style.display = 'none';
-    document.getElementById('quizContainer').style.display = 'block';
-    document.getElementById('actionContainer').style.display = 'block';
-
-    renderQuiz();
-    startTimer();
+// Fungsi untuk tombol "Acak Soal & ABCD"
+function shuffleCurrentPart() {
+  renderQuiz(true);
 }
 
-function startTimer() {
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        let minutes = Math.floor(timeLeft / 60);
-        let seconds = timeLeft % 60;
-        document.getElementById('timerDisplay').innerText = 
-            `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+const kanjiData = [
+  // =========================================================================
+  // PART 1 (Soal 111 - 130)
+  // =========================================================================
+    {
+    id: 111, part: 1, target: "広い", context: "広い", opts: ["ひろい", "せまい", "たかい", "やすい"], ans: 0, arti: "Luas", exp: "漢字「広い」の読み方は「ひろい」です。",
+    onyomi: "こう", kunyomi: "ひろ・い", contoh_kalimat: "あたらしく ひっこした へや は ひろい です"
+  },
+  {
+    id: 112, part: 1, target: "道", context: "道", opts: ["まち", "みち", "みせ", "えき"], ans: 1, arti: "Jalan", exp: "漢字「道」の読み方は「みち」です。",
+    onyomi: "どう", kunyomi: "みち", contoh_kalimat: "かいしゃ まで の みち を おしえて くだい"
+  },
+  {
+    id: 113, part: 1, target: "通り", context: "通り", opts: ["みち", "まち", "とおり", "かど"], ans: 2, arti: "Jalan Utama / Melalui", exp: "漢字「通り」の読み方は「とおり」です。",
+    onyomi: "つう", kunyomi: "とお・る / とおり", contoh_kalimat: "この とおり に は おおきい スーパー が あります"
+  },
+  {
+    id: 114, part: 1, target: "右", context: "右", opts: ["ひだり", "まえ", "うしろ", "みぎ"], ans: 3, arti: "Kanan", exp: "漢字「右」の読み方は「みぎ」です。",
+    onyomi: "う / ゆう", kunyomi: "みぎ", contoh_kalimat: "つぎ の かど を みぎ に まがって くだい"
+  },
+  {
+    id: 115, part: 1, target: "左", context: "左", opts: ["ひだり", "みぎ", "まえ", "うしろ"], ans: 0, arti: "Kiri", exp: "漢字「左」の読み方は「ひだり」です。",
+    onyomi: "さ", kunyomi: "ひだり", contoh_kalimat: "ひだり の ボタン を おすと きかい が うごきます"
+  },
+  {
+    id: 116, part: 1, target: "一つ", context: "一つ", opts: ["ふたつ", "ひとつ", "みっつ", "よっつ"], ans: 1, arti: "Satu buah", exp: "漢字「一つ」の読み方は「ひとつ」です。",
+    onyomi: "いち", kunyomi: "ひと・つ", contoh_kalimat: "りんご を ひとつ くだい"
+  },
+  {
+    id: 117, part: 1, target: "二つ", context: "二つ", opts: ["ひとつ", "みっつ", "ふたつ", "いつつ"], ans: 2, arti: "Dua buah", exp: "漢字「二つ」の読み方は「ふたつ」です。",
+    onyomi: "に", kunyomi: "ふた・つ", contoh_kalimat: "ダンボール を ふたつ はこんで くだい"
+  },
+  {
+    id: 118, part: 1, target: "赤い", context: "赤い", opts: ["あおい", "くろい", "しろい", "あかい"], ans: 3, arti: "Merah", exp: "漢字「赤い」の読み方は「あかい」です。",
+    onyomi: "せき / しゃく", kunyomi: "あか・い", contoh_kalimat: "あかい ランプ が ついたら きかい を とめて くだい"
+  },
+  {
+    id: 119, part: 1, target: "青い", context: "青い", opts: ["あおい", "あかい", "くろい", "しろい"], ans: 0, arti: "Biru", exp: "漢字「青い」の読み方は「あおい」です。",
+    onyomi: "せい / しょう", kunyomi: "あお・い", contoh_kalimat: "あおい ヘルメット を かぶってください"
+  },
+  {
+    id: 120, part: 1, target: "黒い", context: "黒い", opts: ["しろい", "くろい", "あかい", "あおい"], ans: 1, arti: "Hitam", exp: "漢字「黒い」の読み方は「くろい」です。",
+    onyomi: "こく", kunyomi: "くろ・い", contoh_kalimat: "くろい ペン で なまえ を かいて くだい"
+  },
+  {
+    id: 121, part: 1, target: "白い", context: "白い", opts: ["くろい", "あかい", "しろい", "あおい"], ans: 2, arti: "Putih", exp: "漢字「白い」の読み方は「しろい」です。",
+    onyomi: "はく / びゃく", kunyomi: "しろ・い", contoh_kalimat: "しろい さぎょうふく を きて しごと を します"
+  },
+  {
+    id: 122, part: 1, target: "時間", context: "時間", opts: ["ばしょ", "えき", "ひ", "じかん"], ans: 3, arti: "Waktu / Jam", exp: "漢字「時間」の読み方は「じかん」です。",
+    onyomi: "じかん", kunyomi: "じかん", contoh_kalimat: "きゅうけい の じかん に なりました"
+  },
+  {
+    id: 123, part: 1, target: "場所", context: "場所", opts: ["ばしょ", "じかん", "えき", "みち"], ans: 0, arti: "Tempat", exp: "漢字「場所」の読み方は「ばしょ」です。",
+    onyomi: "ばしょ", kunyomi: "ばしょ", contoh_kalimat: "しゅうごう する ばしょ を かくにん します"
+  },
+  {
+    id: 124, part: 1, target: "駅", context: "駅", opts: ["みち", "えき", "みせ", "まち"], ans: 1, arti: "Stasiun", exp: "漢字「駅」の読み方は「えき」です。",
+    onyomi: "えき", kunyomi: "-", contoh_kalimat: "まいあさ えき から バス に のります"
+  },
+  {
+    id: 125, part: 1, target: "日", context: "日", opts: ["つき", "とし", "ひ / にち", "とき"], ans: 2, arti: "Hari / Matahari", exp: "漢字「日」の読み方は「ひ」です。",
+    onyomi: "にち / じつ", kunyomi: "ひ / か", contoh_kalimat: "やすみ の ひ は へや の そうじ を します"
+  },
+  {
+    id: 126, part: 1, target: "出かけます", context: "出かけます", opts: ["まちます", "とまります", "いきます", "でかけます"], ans: 3, arti: "Bepergian / Keluar", exp: "漢字「出かけます」の読み方は「でかけます」です。",
+    onyomi: "しゅつ", kunyomi: "で・かける", contoh_kalimat: "にちようび は ともだち と でかけます"
+  },
+  {
+    id: 127, part: 1, target: "待ちます", context: "待ちます", opts: ["まちます", "でかけます", "とまります", "かえります"], ans: 0, arti: "Menunggu", exp: "漢字「待ちます」の読み方は「まちます」です。",
+    onyomi: "たい", kunyomi: "ま・つ", contoh_kalimat: "バス てい で バス を まちます"
+  },
+  {
+    id: 128, part: 1, target: "止まります", context: "止まります", opts: ["まちます", "とまります", "でかけます", "はたらきます"], ans: 1, arti: "Berhenti", exp: "漢字「止まります」の読み方は「とまります」です。",
+    onyomi: "し", kunyomi: "と・まる / と・める", contoh_kalimat: "あか しんごう で でんしゃ が とまります"
+  },
+  {
+    id: 129, part: 1, target: "食事", context: "食事", opts: ["しごと", "べんきょう", "しょくじ", "かいもの"], ans: 2, arti: "Makan / Makanan", exp: "漢字「食事」の読み方は「しょくじ」です。",
+    onyomi: "しょくじ", kunyomi: "しょくじ", contoh_kalimat: "しょくどう で しょくじ を します"
+  },
+  {
+    id: 130, part: 1, target: "仕事", context: "仕事", opts: ["しょくじ", "べんきょう", "りょこう", "しごと"], ans: 3, arti: "Pekerjaan", exp: "漢字「仕事」の読み方は「しごと」です。",
+    onyomi: "しごと", kunyomi: "しごと", contoh_kalimat: "きょう の しごと は ろくじ に おわります"
+  },
+  {
+    id: 131, part: 1, target: "前", context: "前", opts: ["まえ", "あと", "うえ", "した"], ans: 0, arti: "Depan / Sebelum", exp: "漢字「前」の読み方は「まえ」です。",
+    onyomi: "ぜん", kunyomi: "まえ", contoh_kalimat: "かいしゃ の まえ で しゅうごう してください"
+  },
+  {
+    id: 132, part: 1, target: "後", context: "後", opts: ["まえ", "あと / うしろ", "みぎ", "ひだり"], ans: 1, arti: "Belakang / Setelah", exp: "漢字「後」の読み方は「あと/うしろ」です。",
+    onyomi: "ご / こう", kunyomi: "のち / うしろ / あと", contoh_kalimat: "しごと の あと で そうじ を します"
+  },
+  {
+    id: 133, part: 1, target: "朝", context: "朝", opts: ["ひる", "よる", "あさ", "ばん"], ans: 2, arti: "Pagi", exp: "漢字「朝」の読み方は「あさ」です。",
+    onyomi: "ちょう", kunyomi: "あさ", contoh_kalimat: "あさ はちじ に かいしゃ に きます"
+  },
+  {
+    id: 134, part: 1, target: "昼", context: "昼", opts: ["あさ", "よる", "ばん", "ひる"], ans: 3, arti: "Siang", exp: "漢字「昼」の読み方は「ひる」です。",
+    onyomi: "ちゅう", kunyomi: "ひる", contoh_kalimat: "ひるやすみ に おべんとう を たべます"
+  },
+  {
+    id: 135, part: 1, target: "夜", context: "夜", opts: ["よる", "あさ", "ひる", "ゆうがた"], ans: 0, arti: "Malam", exp: "漢字「夜」の読み方は「よる」です。",
+    onyomi: "や", kunyomi: "よる / よ", contoh_kalimat: "よる じゅうじ に ねます"
+  },
+  {
+    id: 136, part: 1, target: "乗ります", context: "乗ります", opts: ["おります", "のります", "いきます", "きます"], ans: 1, arti: "Naik (Kendaraan)", exp: "漢字「乗ります」の読み方は「のります」です。",
+    onyomi: "じょう", kunyomi: "の・る", contoh_kalimat: "でんしゃ に のって とうきょう へ いきます"
+  },
+  {
+    id: 137, part: 1, target: "学校", context: "学校", opts: ["かいしゃ", "びょういん", "がっこう", "えき"], ans: 2, arti: "Sekolah", exp: "漢字「学校」の読み方は「がっこう」です。",
+    onyomi: "がっこう", kunyomi: "がっこう", contoh_kalimat: "にほんご がっこう で にほんご を べんきょう しました"
+  },
+  {
+    id: 138, part: 1, target: "小学校", context: "小学校", opts: ["ちゅうがっこう", "こうこう", "だいがく", "しょうがっこう"], ans: 3, arti: "SD (Sekolah Dasar)", exp: "漢字「小学校」の読み方は「しょうがっこう」です。",
+    onyomi: "しょうがっこう", kunyomi: "しょうがっこう", contoh_kalimat: "しょうがっこう の ちかく に こうえん が あります"
+  },
+  {
+    id: 139, part: 1, target: "中学校", context: "中学校", opts: ["ちゅうがっこう", "しょうがっこう", "こうこう", "だいがく"], ans: 0, arti: "SMP (Sekolah Menengah Pertama)", exp: "漢字「中学校」の読み方は「ちゅうがっこう」です。",
+    onyomi: "ちゅうがっこう", kunyomi: "ちゅうがっこう", contoh_kalimat: "おとうと は ちゅうがっこう の せいと です"
+  },
+  {
+    id: 140, part: 1, target: "高校", context: "高校", opts: ["しょうがっこう", "こうこう", "ちゅうがっこう", "だいがく"], ans: 1, arti: "SMA (Sekolah Menengah Atas)", exp: "漢字「高校」の読み方は「こうこう」です。",
+    onyomi: "こうこう", kunyomi: "こうこう", contoh_kalimat: "こうこう を そつぎょう してから はたらいています"
+  },
+  {
+    id: 141, part: 1, target: "大学", context: "大学", opts: ["こうこう", "ちゅうがっこう", "だいがく", "しょうがっこう"], ans: 2, arti: "Universitas", exp: "漢字「大学」の読み方は「だいがく」です。",
+    onyomi: "だいがく", kunyomi: "だいがく", contoh_kalimat: "くに の だいがく で えんじにありんぐ を べんきょう しました"
+  },
+  {
+    id: 142, part: 1, target: "先生", context: "先生", opts: ["がくせい", "しゃいん", "いしゃ", "せんせい"], ans: 3, arti: "Guru / Dokter / Instruktur", exp: "漢字「先生」の読み方は「せんせい」です。",
+    onyomi: "せんせい", kunyomi: "せんせい", contoh_kalimat: "せんせい に にほんご を おしえて もらいます"
+  },
+  {
+    id: 143, part: 1, target: "学生", context: "学生", opts: ["がくせい", "せんせい", "しゃいん", "いしゃ"], ans: 0, arti: "Siswa / Mahasiswa", exp: "漢字「学生」の読み方は「がくせい」です。",
+    onyomi: "がくせい", kunyomi: "がくせい", contoh_kalimat: "あの ひと は だいがく の がくせい です"
+  },
+  {
+    id: 144, part: 1, target: "～年生", context: "～年生", opts: ["～ねんかん", "～ねんせい", "～ねん", "～さい"], ans: 1, arti: "Siswa Tingkat/Tahun ~", exp: "漢字「～年生」の読み方は「～ねんせい」です。",
+    onyomi: "ねんせい", kunyomi: "ねんせい", contoh_kalimat: "かれ は だいがく いち ねんせい です"
+  },
+  {
+    id: 145, part: 1, target: "勉強", context: "勉強", opts: ["しごと", "りょこう", "べんきょう", "かいもの"], ans: 2, arti: "Belajar", exp: "漢字「勉強」の読み方は「べんきょう」です。",
+    onyomi: "べんきょう", kunyomi: "べんきょう", contoh_kalimat: "まいにち しごと の あと で にほんご を べんきょう します"
+  },
+  {
+    id: 146, part: 1, target: "文化", context: "文化", opts: ["おんがく", "りょこう", "がっこう", "ぶんか"], ans: 3, arti: "Budaya", exp: "漢字「文化」の読み方は「ぶんか」です。",
+    onyomi: "ぶんか", kunyomi: "ぶんか", contoh_kalimat: "にほん の ぶんか に きょうみ が あります"
+  },
+  {
+    id: 147, part: 1, target: "音楽", context: "音楽", opts: ["おんがく", "ぶんか", "えいが", "どくしょ"], ans: 0, arti: "Musik", exp: "漢字「音楽」の読み方は「おんがく」です。",
+    onyomi: "おんがく", kunyomi: "おんがく", contoh_kalimat: "へや で おんがく を ききます"
+  },
+  {
+    id: 148, part: 1, target: "旅行", context: "旅行", opts: ["りゅうがく", "りょこう", "べんきょう", "かいもの"], ans: 1, arti: "Wisata / Bepergian", exp: "漢字「旅行」の読み方は「りょこう」です。",
+    onyomi: "りょこう", kunyomi: "りょこう", contoh_kalimat: "れんきゅう に ともだち と りょこう します"
+  },
+  {
+    id: 149, part: 1, target: "留学", context: "留学", opts: ["りょこう", "べんきょう", "りゅうがく", "がっこう"], ans: 2, arti: "Studi Luar Negeri", exp: "漢字「留学」の読み方は「りゅうがく」です。",
+    onyomi: "りゅうがく", kunyomi: "りゅうがく", contoh_kalimat: "にほん に りゅうがく しました"
+  },
+  {
+    id: 150, part: 1, target: "友達", context: "友達", opts: ["かぞく", "せんぱい", "しゃいん", "ともだち"], ans: 3, arti: "Teman", exp: "漢字「友達」の読み方は「ともだち」です。",
+    onyomi: "ゆうだち", kunyomi: "ともだち", contoh_kalimat: "ともだち と しょくどう で ひるごはん を たべます"
+  },
+  {
+    id: 151, part: 1, target: "楽しい", context: "楽しい", opts: ["たのしい", "おもしろい", "いそがしい", "たかい"], ans: 0, arti: "Menyenangkan", exp: "漢字「楽しい」の読み方は「たのしい」です。",
+    onyomi: "らく / がく", kunyomi: "たの・しい / たの・しみ", contoh_kalimat: "にほん で の くらし は たのしい です"
+  },
+  {
+    id: 152, part: 1, target: "週", context: "週", opts: ["つき", "しゅう", "ねん", "ひ"], ans: 1, arti: "Minggu (Pekan)", exp: "漢字「週」の読み方は「しゅう」です。",
+    onyomi: "しゅう", kunyomi: "-", contoh_kalimat: "こんしゅう の どようび は やすみ です"
+  },
+  {
+    id: 153, part: 1, target: "～回", context: "～回", opts: ["～かい / ～がい", "～ど", "～かい", "～ばん"], ans: 2, arti: "Kali / Frekuensi ~", exp: "漢字「～回」の読み方は「～かい」です。",
+    onyomi: "かい", kunyomi: "まわ・る", contoh_kalimat: "いっしゅうかん に いっかい スーパー へ いきます"
+  },
+  {
+    id: 154, part: 1, target: "食べ物", context: "食べ物", opts: ["のみもの", "かいもの", "いきもの", "たべもの"], ans: 3, arti: "Makanan", exp: "漢字「食べ物」の読み方は「たべもの」です。",
+    onyomi: "しょくぶつ", kunyomi: "たべもの", contoh_kalimat: "にほん の たべもの は おいしい です"
+  },
+  {
+    id: 155, part: 1, target: "飲物", context: "飲物", opts: ["のみもの", "たべもの", "かいもの", "のりもの"], ans: 0, arti: "Minuman", exp: "漢字「飲物」の読み方は「のみもの」です。",
+    onyomi: "いんぶつ", kunyomi: "のみもの", contoh_kalimat: "じどうはんばいき で つめたい のみもの を かいました"
+  },
+  {
+    id: 156, part: 1, target: "お茶", context: "お茶", opts: ["おさけ", "おちゃ", "おゆ", "みず"], ans: 1, arti: "Teh", exp: "漢字「お茶」の読み方は「おちゃ」です。",
+    onyomi: "ちゃ / さ", kunyomi: "おちゃ", contoh_kalimat: "きゅうけいしつ で あたたかい おちゃ を のみます"
+  },
+  {
+    id: 157, part: 1, target: "お酒", context: "お酒", opts: ["おちゃ", "みず", "おさけ", "おゆ"], ans: 2, arti: "Minuman Beralkohol / Sake", exp: "漢字「お酒」の読み方は「おさけ」です。",
+    onyomi: "しゅ", kunyomi: "さけ / さか", contoh_kalimat: "はたち に なったら おさけ が のめます"
+  },
+  {
+    id: 158, part: 1, target: "作ります", context: "作ります", opts: ["つかいます", "かいます", "とります", "つくります"], ans: 3, arti: "Membuat", exp: "漢字「作ります」の読み方は「つくります」です。",
+    onyomi: "さく / さ", kunyomi: "つく・る", contoh_kalimat: "こうじょう で くるま の ぶひん を つくります"
+  },
+  {
+    id: 159, part: 1, target: "持っていきます", context: "持っていきます", opts: ["もっていきます", "もってきます", "もってかえります", "つれていきます"], ans: 0, arti: "Membawa pergi", exp: "漢字「持っていきます」の読み方は「もっていきます」です。",
+    onyomi: "じ", kunyomi: "も・つ", contoh_kalimat: "かいぎしつ に しりょう を もっていきます"
+  },
+  {
+    id: 160, part: 1, target: "お願いします", context: "お願いします", opts: ["いたします", "おねがいします", "いただきます", "まします"], ans: 1, arti: "Tolong / Mohon bantuan", exp: "漢字「お願いします」の読み方は「おねがいします」です。",
+    onyomi: "がん", kunyomi: "ねが・う", contoh_kalimat: "きょう の しごと も よろしく おねがいします"
+  },
+  {
+    id: 161, part: 1, target: "料理", context: "料理", opts: ["しょくじ", "おんがく", "りょうり", "べんきょう"], ans: 2, arti: "Masakan / Memasak", exp: "漢字「料理」の読み方は「りょうり」です。",
+    onyomi: "りょうり", kunyomi: "りょうり", contoh_kalimat: "しゅうまつ に じぶん で りょうり を します"
+  },
+  {
+    id: 162, part: 1, target: "味", context: "味", opts: ["いろ", "かおり", "おと", "あじ"], ans: 3, arti: "Rasa", exp: "漢字「味」の読み方は「あじ」です。",
+    onyomi: "み", kunyomi: "あじ / あじ・わう", contoh_kalimat: "この りょうり は あじ が こい です"
+  },
+  {
+    id: 163, part: 1, target: "色", context: "色", opts: ["いろ", "あじ", "かたち", "おと"], ans: 0, arti: "Warna", exp: "漢字「色」の読み方は「いろ」です。",
+    onyomi: "しき / しょく", kunyomi: "いろ", contoh_kalimat: "なに いろ の パソコン が いい です か"
+  },
+  {
+    id: 164, part: 1, target: "野菜", context: "野菜", opts: ["くだもの", "やさい", "にく", "さかな"], ans: 1, arti: "Sayuran", exp: "漢字「野菜」の読み方は「やさい」です。",
+    onyomi: "やさい", kunyomi: "やさい", contoh_kalimat: "まいにち やさい を たべる ように しています"
+  },
+  {
+    id: 165, part: 1, target: "少し", context: "少し", opts: ["たくさん", "おおく", "すこし", "すくない"], ans: 2, arti: "Sedikit", exp: "漢字「少し」の読み方は「すこし」です。",
+    onyomi: "しょう", kunyomi: "すこ・し / すく・ない", contoh_kalimat: "にほんご が すこし はなせる よう に なりました"
+  },
+  {
+    id: 166, part: 1, target: "中", context: "中", opts: ["そと", "うえ", "した", "なか"], ans: 3, arti: "Dalam / Tengah", exp: "漢字「中」の読み方は「なか」です。",
+    onyomi: "ちゅう / じゅう", kunyomi: "なか", contoh_kalimat: "はこ の なか に ぶひん を いれて くだい"
+  },
+  {
+    id: 167, part: 1, target: "入っています", context: "入っています", opts: ["はいっています", "でています", "あいています", "しまっています"], ans: 0, arti: "Ada di dalam / Terisi", exp: "漢字「入っています」の読み方は「はいっています」です。",
+    onyomi: "にゅう", kunyomi: "はい・る / い・れる", contoh_kalimat: "ポケット に スマホ が はいっています"
+  },
+  {
+    id: 168, part: 1, target: "会社", context: "会社", opts: ["がっこう", "かいしゃ", "びょういん", "ぎんこう"], ans: 1, arti: "Perusahaan", exp: "漢字「会社」の読み方は「かいしゃ」です。",
+    onyomi: "かいしゃ", kunyomi: "かいしゃ", contoh_kalimat: "かいしゃ の きそく を まもりましょう"
+  },
+  {
+    id: 169, part: 1, target: "本社", context: "本社", opts: ["ししゃ", "かいしゃ", "ほんしゃ", "こうじょう"], ans: 2, arti: "Kantor Pusat", exp: "漢字「本社」の読み方は「ほんしゃ」です。",
+    onyomi: "ほんしゃ", kunyomi: "ほんしゃ", contoh_kalimat: "らいしゅう ほんしゃ から しちょう が きます"
+  },
+  {
+    id: 170, part: 1, target: "支社", context: "支社", opts: ["ほんしゃ", "かいしゃ", "こうじょう", "ししゃ"], ans: 3, arti: "Kantor Cabang", exp: "漢字「支社」の読み方は「ししゃ」です。",
+    onyomi: "ししゃ", kunyomi: "ししゃ", contoh_kalimat: "おおさか の ししゃ へ てんきん します"
+  },
+  {
+    id: 171, part: 1, target: "出張", context: "出張", opts: ["しゅっちょう", "りょこう", "しゅっぱつ", "とうちゃく"], ans: 0, arti: "Dinas Luar", exp: "漢字「出張」の読み方は「しゅっちょう」です。",
+    onyomi: "しゅっちょう", kunyomi: "しゅっちょう", contoh_kalimat: "あした から とうきょう へ しゅっちょう します"
+  },
+  {
+    id: 172, part: 1, target: "空港", context: "空港", opts: ["えき", "くうこう", "みなと", "バスてい"], ans: 1, arti: "Bandara", exp: "漢字「空港」の読み方は「くうこう」です。",
+    onyomi: "くうこう", kunyomi: "くうこう", contoh_kalimat: "はねだ くうこう に とうちゃく しました"
+  },
+  {
+    id: 173, part: 1, target: "出発", context: "出発", opts: ["とうちゃく", "しゅっちょう", "しゅっぱつ", "でかけます"], ans: 2, arti: "Keberangkatan", exp: "漢字「出発」の読み方は「しゅっぱつ」です。",
+    onyomi: "しゅっぱつ", kunyomi: "しゅっぱつ", contoh_kalimat: "バス は はちじ に しゅっぱつ します"
+  },
+  {
+    id: 174, part: 1, target: "到着", context: "到着", opts: ["しゅっぱつ", "しゅっちょう", "きます", "とうちゃく"], ans: 3, arti: "Kedatangan / Tiba", exp: "漢字「到着」の読み方は「とうちゃく」です。",
+    onyomi: "とうちゃく", kunyomi: "とうちゃく", contoh_kalimat: "くじ に かいしゃ に とうちゃく します"
+  },
+  {
+    id: 175, part: 1, target: "午前", context: "午前", opts: ["ごぜん", "ごご", "あさ", "ひる"], ans: 0, arti: "AM / Pagi (Sebelum Siang)", exp: "漢字「午前」の読み方は「ごぜん」です。",
+    onyomi: "ごぜん", kunyomi: "ごぜん", contoh_kalimat: "ごぜん ちゅう に しりょう を つくります"
+  },
+  {
+    id: 176, part: 1, target: "午後", context: "午後", opts: ["ごぜん", "ごご", "よる", "ばん"], ans: 1, arti: "PM / Siang-Malam", exp: "漢字「午後」の読み方は「ごご」です。",
+    onyomi: "ごご", kunyomi: "ごご", contoh_kalimat: "ごご いちじ から かいぎ が あります"
+  },
+  {
+    id: 177, part: 1, target: "自分", context: "自分", opts: ["あなた", "かれ", "じぶん", "じぶんたち"], ans: 2, arti: "Diri Sendiri", exp: "漢字「自分」の読み方は「じぶん」です。",
+    onyomi: "じぶん", kunyomi: "じぶん", contoh_kalimat: "じぶん の へや は じぶん で そうじ します"
+  },
+  {
+    id: 178, part: 1, target: "電話", context: "電話", opts: ["でんき", "でんしゃ", "メール", "でんわ"], ans: 3, arti: "Telepon", exp: "漢字「電話」の読み方は「でんわ」です。",
+    onyomi: "でんわ", kunyomi: "でんわ", contoh_kalimat: "たなか さん に でんわ を かけます"
+  },
+  {
+    id: 179, part: 1, target: "電気", context: "電気", opts: ["でんき", "でんわ", "でんしゃ", "てんき"], ans: 0, arti: "Listrik / Lampu", exp: "漢字「電気」の読み方は「でんき」です。",
+    onyomi: "でんき", kunyomi: "でんき", contoh_kalimat: "へや を でるとき は でんき を けして くだい"
+  },
+  {
+    id: 180, part: 1, target: "電車", context: "電車", opts: ["くるま", "でんしゃ", "じてんしゃ", "バス"], ans: 1, arti: "Kereta Listrik", exp: "漢字「電車」の読み方は「でんしゃ」です。",
+    onyomi: "でんしゃ", kunyomi: "でんしゃ", contoh_kalimat: "でんしゃ で しゅっきん します"
+  },
+  {
+    id: 181, part: 1, target: "車", context: "車", opts: ["でんしゃ", "じてんしゃ", "くるま", "バス"], ans: 2, arti: "Mobil", exp: "漢字「車」の読み方は「くるま」です。",
+    onyomi: "しゃ", kunyomi: "くるま", contoh_kalimat: "しゃちょう の くるま を せんしゃ します"
+  },
+  {
+    id: 182, part: 1, target: "送ります", context: "送ります", opts: ["つかいます", "借ります", "買います", "おくります"], ans: 3, arti: "Mengirim", exp: "漢字「送ります」の読み方は「おくります」です。",
+    onyomi: "そう", kunyomi: "おく・る", contoh_kalimat: "メール で しりょう を おくります"
+  },
+  {
+    id: 183, part: 1, target: "使います", context: "使います", opts: ["つかいます", "おくります", "かります", "つくります"], ans: 0, arti: "Menggunakan", exp: "漢字「使います」の読み方は「つかいます」です。",
+    onyomi: "し", kunyomi: "つか・う", contoh_kalimat: "この きかい の つかいかた を おしえて くだい"
+  },
+  {
+    id: 184, part: 1, target: "借ります", context: "借ります", opts: ["かします", "かります", "かいます", "とります"], ans: 1, arti: "Meminjam", exp: "漢字「借ります」の読み方は「かります」です。",
+    onyomi: "しゃく", kunyomi: "か・りる", contoh_kalimat: "せんぱい から ぐーず を かります"
+  },
+  {
+    id: 185, part: 1, target: "体", context: "体", opts: ["あたま", "め", "からだ", "て"], ans: 2, arti: "Tubuh / Badan", exp: "漢字「体」の読み方は「からだ」です。",
+    onyomi: "たい / てい", kunyomi: "からだ", contoh_kalimat: "からだ の ちょうし が わるい です"
+  },
+  {
+    id: 186, part: 1, target: "頭", context: "頭", opts: ["からだ", "め", "みみ", "あたま"], ans: 3, arti: "Kepala", exp: "漢字「頭」の読み方は「あたま」です。",
+    onyomi: "とう / ず", kunyomi: "あたま / かしら", contoh_kalimat: "あたま が いたい ので くすり を のみます"
+  },
+  {
+    id: 187, part: 1, target: "目", context: "目", opts: ["め", "みみ", "くち", "て"], ans: 0, arti: "Mata", exp: "漢字「目」の読み方は「め」です。",
+    onyomi: "もく / ぼく", kunyomi: "め", contoh_kalimat: "め を あけて けんさ します"
+  },
+  {
+    id: 188, part: 1, target: "口", context: "口", opts: ["め", "くち", "みみ", "て"], ans: 1, arti: "Mulut", exp: "漢字「口」の読み方は「くち」です。",
+    onyomi: "こう / く", kunyomi: "くち", contoh_kalimat: "マスク で くち を かくします"
+  },
+  {
+    id: 189, part: 1, target: "耳", context: "耳", opts: ["め", "くち", "みみ", "て"], ans: 2, arti: "Telinga", exp: "漢字「耳」の読み方は「みみ」です。",
+    onyomi: "じ", kunyomi: "みみ", contoh_kalimat: "こうじょう で は みみ せん を つけます"
+  },
+  {
+    id: 190, part: 1, target: "手", context: "手", opts: ["あし", "め", "みみ", "て"], ans: 3, arti: "Tangan", exp: "漢字「手」の読み方は「て」です。",
+    onyomi: "しゅ", kunyomi: "て", contoh_kalimat: "しごと の あと で て を よく あらいま"
+  },
+  {
+    id: 191, part: 1, target: "足", context: "足", opts: ["あし", "て", "あたま", "からだ"], ans: 0, arti: "Kaki", exp: "漢字「足」の読み方は「あし」です。",
+    onyomi: "そく", kunyomi: "あし / た・りる", contoh_kalimat: "あんぜんぐつ を はいて あし を まもりま"
+  },
+  {
+    id: 192, part: 1, target: "上", context: "上", opts: ["した", "うえ", "なか", "まえ"], ans: 1, arti: "Atas", exp: "漢字「上」の読み方は「うえ」です。",
+    onyomi: "じょう / しょう", kunyomi: "うえ / あ・げる", contoh_kalimat: "つくえ の うえ に つぎ の しりょう が あります"
+  },
+  {
+    id: 193, part: 1, target: "下", context: "下", opts: ["うえ", "なか", "した", "うしろ"], ans: 2, arti: "Bawah", exp: "漢字「下」の読み方は「した」です。",
+    onyomi: "か / げ", kunyomi: "した / さ・げる", contoh_kalimat: "いす の した に にもつ を おきます"
+  },
+  {
+    id: 194, part: 1, target: "毎～", context: "毎～", opts: ["いつ～", "なん～", "こん～", "まい～"], ans: 3, arti: "Setiap ~", exp: "漢字「毎～」の読み方は「まい～」です。",
+    onyomi: "まい", kunyomi: "-", contoh_kalimat: "まいあさ ろくじ に おきます"
+  },
+  {
+    id: 195, part: 1, target: "毎朝", context: "毎朝", opts: ["まいあさ", "まいにち", "まいばん", "まいしゅう"], ans: 0, arti: "Setiap Pagi", exp: "漢字「毎朝」の読み方は「まいあさ」です。",
+    onyomi: "まいあさ", kunyomi: "まいあさ", contoh_kalimat: "まいあさ ラジオ たいそう を します"
+  },
+  {
+    id: 196, part: 1, target: "毎日", context: "毎日", opts: ["まいあさ", "まいにち", "まいばん", "まいとし"], ans: 1, arti: "Setiap Hari", exp: "漢字「毎日」の読み方は「まいにち」です。",
+    onyomi: "まいにち", kunyomi: "まいにち", contoh_kalimat: "まいにち にほんご を はなす れんしゅう を します"
+  },
+  {
+    id: 197, part: 1, target: "週末", context: "週末", opts: ["こんしゅう", "らいしゅう", "しゅうまつ", "せんしゅう"], ans: 2, arti: "Akhir Pekan", exp: "漢字「週末」の読み方は「しゅうまつ」です。",
+    onyomi: "しゅうまつ", kunyomi: "しゅうまつ", contoh_kalimat: "しゅうまつ は べんきょう や かいもの を します"
+  },
+  {
+    id: 198, part: 1, target: "元気", context: "元気", opts: ["てんき", "にんき", "びょうき", "げんき"], ans: 3, arti: "Sehat / Bersemangat", exp: "漢字「元気」の読み方は「げんき」です。",
+    onyomi: "げんき", kunyomi: "げんき", contoh_kalimat: "きょう も げんき に あいさつ を しましょう"
+  },
+  {
+    id: 199, part: 1, target: "外", context: "外", opts: ["そと", "なか", "まえ", "うしろ"], ans: 0, arti: "Luar", exp: "漢字「外」の読み方は「そと」です。",
+    onyomi: "がい / げ", kunyomi: "そと / ほか", contoh_kalimat: "そと は あめ が ふっています"
+  },
+  {
+    id: 200, part: 1, target: "起きます", context: "起きます", opts: ["ねます", "おきます", "あるきます", "はしります"], ans: 1, arti: "Bangun", exp: "漢字「起きます」の読み方は「おきます」です。",
+    onyomi: "き", kunyomi: "お・きる", contoh_kalimat: "あさ ろくじ に おきます"
+  },
+  {
+    id: 201, part: 1, target: "歩きます", context: "歩きます", opts: ["はしります", "およぎます", "あるきます", "いきます"], ans: 2, arti: "Berjalan kaki", exp: "漢字「歩きます」の読み方は「あるきます」です。",
+    onyomi: "ほ / ふ", kunyomi: "ある・く", contoh_kalimat: "えき まで あるいて いきます"
+  },
+  {
+    id: 202, part: 1, target: "走ります", context: "走ります", opts: ["あるきます", "およぎます", "とまります", "はしります"], ans: 3, arti: "Berlari", exp: "漢字「走ります」の読み方は「はしります」です。",
+    onyomi: "そう", kunyomi: "はし・る", contoh_kalimat: "こうじょう の なか で は はしらないで くだい"
+  },
+  {
+    id: 203, part: 1, target: "泳ぎます", context: "泳ぎます", opts: ["およぎます", "はしります", "あるきます", "あそびます"], ans: 0, arti: "Berenang", exp: "漢字「泳ぎます」の読み方は「およぎます」です。",
+    onyomi: "えい", kunyomi: "およ・ぐ", contoh_kalimat: "プール で およぎます"
+  },
+  {
+    id: 204, part: 1, target: "お祝い", context: "お祝い", opts: ["おねがい", "おいわい", "おまつり", "おみやげ"], ans: 1, arti: "Perayaan / Hadiah Selamat", exp: "漢字「お祝い」の読み方は「おいわい」です。",
+    onyomi: "しゅく", kunyomi: "いわ・い", contoh_kalimat: "ともだち の たんじょうび の おいわい を します"
+  },
+  {
+    id: 205, part: 1, target: "誕生日", context: "誕生日", opts: ["きゅうりょうび", "にちようび", "たんじょうび", "きょう"], ans: 2, arti: "Hari Ulang Tahun", exp: "漢字「誕生日」の読み方は「たんじょうび」です。",
+    onyomi: "たんじょうび", kunyomi: "たんじょうび", contoh_kalimat: "たんじょうび おめでとう ございます"
+  },
+  {
+    id: 206, part: 1, target: "結婚", context: "結婚", opts: ["たんじょう", "しゅうしょく", "りゅうがく", "けっこん"], ans: 3, arti: "Pernikahan", exp: "漢字「結婚」の読み方は「けっこん」です。",
+    onyomi: "けっこん", kunyomi: "けっこん", contoh_kalimat: "らいねん けっこん します"
+  },
+  {
+    id: 207, part: 1, target: "絵", context: "絵", opts: ["え", "しゃしん", "ほん", "かみ"], ans: 0, arti: "Gambar / Lukisan", exp: "漢字「絵」の読み方は「え」です。",
+    onyomi: "かい / え", kunyomi: "-", contoh_kalimat: "へや に きれい な え を かざります"
+  },
+  {
+    id: 208, part: 1, target: "写真", context: "写真", opts: ["え", "しゃしん", "かみ", "きろく"], ans: 1, arti: "Foto", exp: "漢字「写真」の読み方は「しゃしん」です。",
+    onyomi: "しゃしん", kunyomi: "しゃしん", contoh_kalimat: "みんな で しゃしん を とりましょう"
+  },
+  {
+    id: 209, part: 1, target: "時計", context: "時計", opts: ["じかん", "でんわ", "とけい", "カメラ"], ans: 2, arti: "Jam / Arloji", exp: "漢字「時計」の読み方は「とけい」です。",
+    onyomi: "とけい", kunyomi: "とけい", contoh_kalimat: "かべ の とけい を みてください"
+  },
+  {
+    id: 210, part: 1, target: "着ます", context: "着ます", opts: ["はきます", "ぬぎます", "かぶります", "きます"], ans: 3, arti: "Memakai (Baju)", exp: "漢字「着ます」の読み方は「きます」です。",
+    onyomi: "ちゃく", kunyomi: "き・る / つ・く", contoh_kalimat: "さぎょうふく を きます"
+  },
+  {
+    id: 211, part: 1, target: "先～", context: "先～", opts: ["せん～", "こん～", "らい～", "きょ～"], ans: 0, arti: "Yang Lalu / Dahulu", exp: "漢字「先～」の読み方は「せん～」です。",
+    onyomi: "せん", kunyomi: "さき", contoh_kalimat: "せんげつ にほん に きました"
+  },
+  {
+    id: 212, part: 1, target: "先週", context: "先週", opts: ["こんしゅう", "せんしゅう", "らいしゅう", "まいしゅう"], ans: 1, arti: "Minggu Lalu", exp: "漢字「先週」の読み方は「せんしゅう」です。",
+    onyomi: "せんしゅう", kunyomi: "せんしゅう", contoh_kalimat: "せんしゅう テスト が ありました"
+  },
+  {
+    id: 213, part: 1, target: "今月", context: "今月", opts: ["せんげつ", "らいげつ", "こんげつ", "まいげつ"], ans: 2, arti: "Bulan Ini", exp: "漢字「今月」の読み方は「こんげつ」です。",
+    onyomi: "こんげつ", kunyomi: "こんげつ", contoh_kalimat: "こんげつ の きゅうりょうび は にじゅう にち です"
+  },
+  {
+    id: 214, part: 1, target: "来年", context: "来年", opts: ["ことし", "きょねん", "まいねん", "らいねん"], ans: 3, arti: "Tahun Depan", exp: "漢字「来年」の読み方は「らいねん」です。",
+    onyomi: "らいねん", kunyomi: "らいねん", contoh_kalimat: "らいねん くに へ かえります"
+  },
+  {
+    id: 215, part: 1, target: "今年", context: "今年", opts: ["ことし", "らいねん", "きょねん", "まいねん"], ans: 0, arti: "Tahun Ini", exp: "漢字「今年」の読み方は「ことし」です。",
+    onyomi: "ことし", kunyomi: "ことし", contoh_kalimat: "ことし は にほんご の しけん を うけます"
+  },
+  {
+    id: 216, part: 1, target: "去年", context: "去年", opts: ["ことし", "きょねん", "らいねん", "まいねん"], ans: 1, arti: "Tahun Lalu", exp: "漢字「去年」の読み方は「きょねん」です。",
+    onyomi: "きょねん", kunyomi: "きょねん", contoh_kalimat: "きょねん の じゅうがつ に にほん へ きました"
+  },
+  {
+    id: 217, part: 1, target: "家", context: "家", opts: ["へや", "みせ", "いえ / うち", "かいしゃ"], ans: 2, arti: "Rumah", exp: "漢字「家」の読み方は「いえ」です。",
+    onyomi: "か / け", kunyomi: "いえ / うち", contoh_kalimat: "しごと が おわったら すぐ いえ に かえります"
+  },
+  {
+    id: 218, part: 1, target: "思います", context: "思います", opts: ["言います", "話します", "聞きます", "おもいます"], ans: 3, arti: "Berpikir / Berpendapat", exp: "漢字「思います」の読み方は「おもいます」です。",
+    onyomi: "し", kunyomi: "おも・う", contoh_kalimat: "いい あいであ だ と おもいます"
+  },
+  {
+    id: 219, part: 1, target: "自己紹介", context: "自己紹介", opts: ["じこしょうかい", "あいさつ", "めんだん", "かいぎ"], ans: 0, arti: "Perkenalan Diri", exp: "漢字「自己紹介」の読み方は「じこしょうかい」です。",
+    onyomi: "じこしょうかい", kunyomi: "じこしょうかい", contoh_kalimat: "はじめ に じこしょうかい を してください"
+  },
+  {
+    id: 220, part: 1, target: "名前", context: "名前", opts: ["じぶん", "なまえ", "へや", "かんばん"], ans: 1, arti: "Nama", exp: "漢字「名前」の読み方は「なまえ」です。",
+    onyomi: "なまえ", kunyomi: "なまえ", contoh_kalimat: "ここに なまえ を かいて くだい"
+  },
+  {
+    id: 221, part: 1, target: "意味", context: "意味", opts: ["りゆう", "あじ", "いみ", "ことば"], ans: 2, arti: "Arti / Makna", exp: "漢字「意味」の読み方は「いみ」です。",
+    onyomi: "いみ", kunyomi: "いみ", contoh_kalimat: "この ことば の いみ が わからない です"
+  },
+  {
+    id: 222, part: 1, target: "本屋", context: "本屋", opts: ["はなや", "へや", "みせ", "ほんや"], ans: 3, arti: "Toko Buku", exp: "漢字「本屋」の読み方は「ほんや」です。",
+    onyomi: "ほんや", kunyomi: "ほんや", contoh_kalimat: "えき の ちかく の ほんや で じしょ を かいました"
+  },
+  {
+    id: 223, part: 1, target: "近く", context: "近く", opts: ["ちかく", "とおく", "まえ", "うしろ"], ans: 0, arti: "Dekat / Sekitar", exp: "漢字「近く」の読み方は「ちかく」です。",
+    onyomi: "きん", kunyomi: "ちか・い", contoh_kalimat: "りょう の ちかく に コンビニ が あります"
+  },
+  {
+    id: 224, part: 1, target: "住みます", context: "住みます", opts: ["いきます", "すみます", "きます", "かえります"], ans: 1, arti: "Tinggal / Merekam jejak tempat tinggal", exp: "漢字「住みます」の読み方は「すみます」です。",
+    onyomi: "じゅう", kunyomi: "す・む", contoh_kalimat: "いま とうきょう に すんでいます"
+  }
 
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            alert("Waktu ujian telah habis! Jawaban Anda akan dikirim secara otomatis.");
-            submitQuiz();
+];
+
+
+
+    let currentPart = 1;
+function filterRange() {
+  const start = parseInt(document.getElementById('startNo').value) || 1;
+  const end = parseInt(document.getElementById('endNo').value) || kanjiData.length;
+  
+  // Memotong data soal sesuai rentang nomor yang diinput
+  currentQuestions = kanjiData.slice(start - 1, end);
+  renderQuiz();
+}
+
+    // 3. Fungsi Render Quiz (Mengacak Soal & Pilihan Jawaban)
+    function renderQuiz(isShuffle = false) {
+        const quizContainer = document.getElementById('quizContainer');
+        quizContainer.innerHTML = '';
+
+        // Ambil data berdasarkan Part saat ini
+        let currentQuestions = kanjiData.filter(q => q.part === currentPart);
+
+        if (currentQuestions.length === 0) {
+            quizContainer.innerHTML = `<div class="card"><p style="text-align:center;">Data untuk Part ${currentPart} belum dimasukkan.</p></div>`;
+            return;
         }
-    }, 1000);
-}
 
-function renderQuiz() {
-    const quizContainer = document.getElementById('quizContainer');
-    quizContainer.innerHTML = '';
+        // Jika tombol Acak dipencet atau halaman baru dimuat, acak urutan soalnya
+        if (isShuffle) {
+            currentQuestions = shuffleArray(currentQuestions);
+        }
+currentQuestions.forEach((q, index) => {
 
-    // Acak urutan soal
-    const shuffledQuestions = shuffleArray(kanjiData);
-    document.getElementById('progressDisplay').innerText = `0 / ${shuffledQuestions.length}`;
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            const highlightedText = q.context.replace(q.target, `<span class="kanji-highlight">${q.target}</span>`);
 
-    shuffledQuestions.forEach((q, index) => {
-        const card = document.createElement('div');
-        card.className = 'card';
+            // Mempersiapkan Pilihan Jawaban (bisa teracak otomatis)
+            let optionObjects = q.opts.map((optText, index) => {
+                return { text: optText, isCorrect: index === q.ans };
+            });
 
-        const highlightedText = q.context.replace(q.target, `<span class="kanji-highlight">${q.target}</span>`);
+            if (isShuffle) {
+                optionObjects = shuffleArray(optionObjects);
+            }
 
-        // Map & Shuffle Pilihan
-        let optionObjects = q.opts.map((optText, optIdx) => ({
-            text: optText,
-            isCorrect: optIdx === q.ans
-        }));
-        optionObjects = shuffleArray(optionObjects);
+            card.innerHTML = `
+                <div class="q-title">${index + 1}. ${highlightedText}</div>
+</div>
+                <div class="options" id="opts-${q.id}">
+                    ${optionObjects.map((opt, idx) => `
+                        <button class="opt-btn" data-correct="${opt.isCorrect}" onclick="checkAns(this, ${q.id})">
+                            ${String.fromCharCode(65 + idx)}. ${opt.text}
+                        </button>
+                    `).join('')}
+                </div>
+                <div class="detail-box" id="detail-${q.id}">
+                    <div class="detail-title">Detail Kanji: ${q.target}</div>
+                    <b>Arti:</b> ${q.arti}<br>
+<b>Arti:</b> ${q.arti}<br>
+<b>Onyomi:</b> ${q.onyomi || q.on || '-'}<br>
+<b>Kunyomi:</b> ${q.kunyomi || q.kun || '-'}<br>
+<b>Contoh Kalimat:</b> ${q.contoh_kalimat || '-'}<br>
+<b>Penjelasan:</b> ${q.exp}
 
-        card.innerHTML = `
-            <div class="q-title">${index + 1}. ${highlightedText}</div>
-            <div class="options" id="opts-${q.id}">
-                ${optionObjects.map((opt, idx) => `
-                    <button class="opt-btn" data-correct="${opt.isCorrect}" onclick="selectAnswer(this, ${q.id})">
-                        ${String.fromCharCode(65 + idx)}.${opt.text}
-                    </button>
-                `).join('')}
-            </div>
-            <div class="detail-box" id="detail-${q.id}">
-                <div class="detail-title">Detail Kanji: ${q.target}</div>
-                <b>Arti:</b> ${q.arti}<br>
-                <b>Onyomi:</b> ${q.onyomi || '-'}<br>
-                <b>Kunyomi:</b> ${q.kunyomi || '-'}<br>
-                <b>Contoh:</b> ${q.contoh_kalimat || '-'}<br>
-                <b>Penjelasan:</b> ${q.exp}
-            </div>
-        `;
-        quizContainer.appendChild(card);
-    });
-}
+                </div>
+            `;
+            quizContainer.appendChild(card);
+        });
 
-function selectAnswer(btn, qId) {
-    const parentContainer = document.getElementById(`opts-${qId}`);
-    const buttons = parentContainer.querySelectorAll('.opt-btn');
+        document.getElementById('partDisplay').innerText = `Part ${currentPart}`;
 
-    // Kunci tombol agar tidak bisa diganti terus-menerus
-    buttons.forEach(b => b.disabled = true);
-
-    const isCorrect = btn.getAttribute('data-correct') === 'true';
-    if (isCorrect) {
-        btn.classList.add('correct');
-        userAnswers[qId] = true;
-    } else {
-        btn.classList.add('wrong');
-        userAnswers[qId] = false;
+        document.getElementById('prevBtn').disabled = currentPart === 1;
     }
 
-    // Tampilkan penjelasan
-    document.getElementById(`detail-${qId}`).style.display = 'block';
-
-    // Update Progres
-    totalAnswered++;
-    document.getElementById('progressDisplay').innerText = `${totalAnswered} / ${kanjiData.length}`;
+function checkAns(selectedBtn, qId) {
+  const isCorrect = selectedBtn.getAttribute('data-correct') === 'true';
+  
+  if (isCorrect) {
+    selectedBtn.classList.add('correct');
+    totalScore += 10; // Tambahkan 10 poin per soal benar
+    document.getElementById('scoreDisplay').innerText = totalScore;
+  } else {
+    selectedBtn.classList.add('wrong');
+  }
+  
+  // Mematikan tombol setelah dipilih
+  const detailBox = document.getElementById(`detail-${qId}`);
+  if (detailBox) detailBox.style.display = 'block';
 }
 
-function submitQuiz() {
-    clearInterval(timerInterval);
 
-    // Hitung Skor (Skala 0 - 100)
-    let correctCount = Object.values(userAnswers).filter(val => val === true).length;
-    let score = Math.round((correctCount / kanjiData.length) * 100);
-    let isPassed = score >= 70;
-
-    const name = document.getElementById('userName').value.trim();
-    const id = document.getElementById('userId').value.trim();
-
-    // Sembunyikan Kuis, Tampilkan Layar Hasil
-    document.getElementById('quizContainer').style.display = 'none';
-    document.getElementById('actionContainer').style.display = 'none';
-    document.getElementById('sticky-header').style.display = 'none';
-    
-    const resultScreen = document.getElementById('result-screen');
-    resultScreen.style.display = 'block';
-
-    document.getElementById('participantInfo').innerText = `Peserta: ${name} (${id})`;
-    document.getElementById('finalScore').innerText = score;
-    
-    const passStatus = document.getElementById('passStatus');
-    if (isPassed) {
-        passStatus.innerText = "SELAMAT, ANDA LULUS! 🎉";
-        passStatus.style.color = "#2e7d32";
-    } else {
-        passStatus.innerText = "MAAF, ANDA BELUM LULUS ❌";
-        passStatus.style.color = "#c62828";
+    // 5. Navigasi Part
+    function changePart(dir) {
+        currentPart += dir;
+        if (currentPart < 1) currentPart = 1;
+        renderQuiz(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Kirim Data ke Google Sheets
-    sendDataToDashboard({
-        nama: name,
-        email: id,
-        score: score,
-        percentage: score,
-        status: isPassed ? "LULUS" : "TIDAK LULUS"
-    });
-}
-
-function sendDataToDashboard(payload) {
-    if(!SCRIPT_URL || SCRIPT_URL.includes("YOUR_SCRIPT_ID_HERE")) {
-        console.warn("URL Google Apps Script belum dikonfigurasi.");
-        return;
+    // 6. Fungsi Khusus Tombol Acak Instan
+    function shuffleCurrentPart() {
+        renderQuiz(true);
     }
 
-    fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-    })
-    .then(() => console.log("Data ujian berhasil dikirim ke Google Sheets."))
-    .catch(err => console.error("Gagal mengirim data:", err));
-}
+
+        document.getElementById('partDisplay').innerText = `Part ${currentPart}`;
+
+
+    function changePart(dir) {
+        currentPart += dir;
+        if (currentPart < 1) currentPart = 1;
+        renderQuiz();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+// Panggil pertama kali saat web dimuat
+renderQuiz(false);
+
+
 </script>
 
 </body>
 </html>
+
+
